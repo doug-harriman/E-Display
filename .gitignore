@@ -1,0 +1,7 @@
+# Generated and editor files
+__pycache__/
+.vscode/
+.nicegui/
+
+# Ignore mechanical files until there's something ready to share.
+mechanical/

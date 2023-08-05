@@ -1,0 +1,7 @@
+__pycache__/
+*.csv
+*.dill
+*.json
+
+# Personal calendar formatter
+futsal_csv_formatter.py

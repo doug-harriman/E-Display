@@ -1,0 +1,13 @@
+# Generated files
+__pycache__/*
+.nicegui/*
+
+# Development & transient data
+*.pkl
+*.dill
+*.png
+*.db
+
+# Credentials and instance specific configs.
+*.json
+o365_token.txt

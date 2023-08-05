@@ -1,0 +1,206 @@
+{
+    "skc": 
+    {
+        "description": "Fair/clear",
+        "day":"wi-day-sunny.svg",
+        "night":"wi-night-clear.svg"
+    },
+    "few": 
+    {
+        "description": "A few clouds",
+        "day":"wi-day-sunny-overcast.svg",
+        "night":"wi-night-alt-partly-cloudy.svg"
+    },
+    "sct": 
+    {
+        "description": "Partly cloudy",
+        "day":"wi-day-cloudy.svg",
+        "night":"wi-night-alt-cloudy.svg"
+    },
+    "bkn": 
+    {
+        "description": "Mostly cloudy",
+        "day":"wi-cloud.svg",
+        "night":"wi-cloud.svg"
+    },
+    "ovc": 
+    {
+        "description": "Overcast",
+        "day":"wi-cloudy.svg",
+        "night":"wi-cloudy.svg"
+    },
+    "wind_skc": 
+    {
+        "description": "Fair/clear and windy",
+        "day":"wi-day-windy.svg",
+        "night":"wi-cloudy-gusts.svg"
+    },
+    "wind_few": 
+    {
+        "description": "A few clouds and windy",
+        "day":"wi-day-cloudy-gusts.svg",
+        "night":"wi-night-alt-cloudy-gusts.svg"
+    },
+    "wind_sct": 
+    {
+        "description": "Partly cloudy and windy",
+        "day":"wi-day-cloudy-gusts.svg",
+        "night":"wi-night-alt-cloudy-gusts.svg"
+    },
+    "wind_bkn": 
+    {
+        "description": "Mostly cloudy and windy",
+        "day":"wi-day-cloudy-gusts.svg",
+        "night":"wi-night-alt-cloudy-gusts.svg"
+    },
+    "wind_ovc": 
+    {
+        "description": "Overcast and windy",
+        "day":"wi-cloudy-gusts.svg",
+        "night":"wi-cloudy-gusts.svg"
+    },
+    "snow": 
+    {
+        "description": "Snow",
+        "day":"wi-day-snow.svg",
+        "night":"wi-night-alt-snow.svg"
+    },
+    "rain_snow": 
+    {
+        "description": "Rain/snow",
+        "day":"wi-day-rain-mix.svg",
+        "night":"wi-night-alt-rain-mix.svg"
+    },
+    "rain_sleet": 
+    {
+        "description": "Rain/sleet",
+        "day":"wi-day-rain-mix.svg",
+        "night":"wi-night-alt-rain-mix.svg"
+    },
+    "snow_sleet": 
+    {
+        "description": "Snow/sleet",
+        "day":"wi-day-rain-mix.svg",
+        "night":"wi-night-alt-rain-mix.svg"
+    },
+    "fzra": 
+    {
+        "description": "Freezing rain",
+        "day":"wi-day-rain-mix.svg",
+        "night":"wi-night-alt-rain-mix.svg"
+    },
+    "rain_fzra": 
+    {
+        "description": "Rain/freezing rain",
+        "day":"wi-day-rain-mix.svg",
+        "night":"wi-night-alt-rain-mix.svg"
+    },
+    "snow_fzra": 
+    {
+        "description": "Freezing rain/snow",
+        "day":"wi-day-rain-mix.svg",
+        "night":"wi-night-alt-rain-mix.svg"
+    },
+    "sleet": 
+    {
+        "description": "Sleet",
+        "day":"wi-day-sleet.svg",
+        "night":"wi-night-alt-sleet.svg"
+    },
+    "rain": 
+    {
+        "description": "Rain",
+        "day":"wi-day-rain.svg",
+        "night":"wi-night-alt-rain.svg"
+    },
+    "rain_showers": 
+    {
+        "description": "Rain showers (high cloud cover)",
+        "day":"wi-day-showers.svg",
+        "night":"wi-night-alt-showers.svg"
+    },
+    "rain_showers_hi": 
+    {
+        "description": "Rain showers (low cloud cover)",
+        "day":"wi-day-showers.svg",
+        "night":"wi-night-alt-showers.svg"
+    },
+    "tsra": 
+    {
+        "description": "Thunderstorm (high cloud cover)",
+        "day":"wi-day-thunderstorm.svg",
+        "night":"wi-night-alt-thunderstorm.svg"
+    },
+    "tsra_sct": 
+    {
+        "description": "Thunderstorm (medium cloud cover)",
+        "day":"wi-day-thunderstorm.svg",
+        "night":"wi-night-alt-thunderstorm.svg"
+    },
+    "tsra_hi": 
+    {
+        "description": "Thunderstorm (low cloud cover)",
+        "day":"wi-day-thunderstorm.svg",
+        "night":"wi-night-alt-thunderstorm.svg"
+    },
+    "tornado": 
+    {
+        "description": "Tornado",
+        "day":"wi-tornado.svg",
+        "night":"wi-tornado.svg"
+    },
+    "hurricane": 
+    {
+        "description": "Hurricane conditions",
+        "day":"wi-hurricane.svg",
+        "night":"wi-hurricane.svg"
+    },
+    "tropical_storm": 
+    {
+        "description": "Tropical storm conditions",
+        "day":"wi-hurricane.svg",
+        "night":"wi-hurricane.svg"
+    },
+    "dust": 
+    {
+        "description": "Dust",
+        "day":"wi-dust.svg",
+        "night":"wi-dust.svg"
+    },
+    "smoke": 
+    {
+        "description": "Smoke",
+        "day":"wi-smoke.svg",
+        "night":"wi-smoke.svg"
+    },
+    "haze": 
+    {
+        "description": "Haze",
+        "day":"wi-day-haze.svg",
+        "night":"wi-day-haze.svg"
+    },
+    "hot": 
+    {
+        "description": "Hot",
+        "day":"wi-hot.svg",
+        "night":"wi-thermometer.svg"
+    },
+    "cold": 
+    {
+        "description": "Cold",
+        "day":"wi-thermometer-exterior.svg",
+        "night":"wi-thermometer-exterior.svg"
+    },
+    "blizzard": 
+    {
+        "description": "Blizzard",
+        "day":"wi-day-snow-wind.svg",
+        "night":"wi-night-alt-snow-wind.svg"
+    },
+    "fog": 
+    {
+        "description": "Fog/mist",
+        "day":"wi-day-fog.svg",
+        "night":"wi-night-fog.svg"
+    }
+}
