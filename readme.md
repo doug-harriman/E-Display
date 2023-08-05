@@ -66,9 +66,12 @@ There are many impressive projects out there that do similar things.  They've bo
     * Post state information to MQTT broker.
     * Keeps device software simple.  MQTT data stream without adding MQTT client to device.
     * Additional small MQTT process to push MQTT data to Influx DB.
+* Server software updates via `git pull` from web server.
+
 
 ## Files
 
+```
 Project Structure
 ├── LICENSE
 ├── doc
@@ -122,7 +125,7 @@ Project Structure
     ├── serve.sh
     ├── string-filters.json
     └── theme.py
-
+```
 
 ## Installation
 
