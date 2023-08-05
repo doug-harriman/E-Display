@@ -6,7 +6,9 @@ Image server for remote electronic displays such as a Kindle.
 
 This project was motivated by two desires:
 1. To have a nice display of my work calendar on my desk, available at a glance without having to open up Outlook.  
-2. To learn about web programming via Python.  I'm sure there's a lot of stuff here that could be greatly improved.  Please submit pull requests if you can make things better.
+2. To learn about web programming via Python.  
+
+I know there's a lot of stuff here that could be greatly improved.  Please submit pull requests if you'd like to help.
 
 ## Project Inspiration & References
 
@@ -65,7 +67,62 @@ There are many impressive projects out there that do similar things.  They've bo
     * Keeps device software simple.  MQTT data stream without adding MQTT client to device.
     * Additional small MQTT process to push MQTT data to Influx DB.
 
-## System Architecture
+## Files
+
+Project Structure
+├── LICENSE
+├── doc
+│   └── dir.md
+├── kindle
+│   ├── init.sh
+│   ├── readme.md
+│   ├── tmux
+│   └── update.sh
+├── readme.md
+└── server
+    ├── Fonts
+    │   └── <font files>
+    ├── app.py
+    ├── calendar_base.py
+    ├── db.py
+    ├── device-data.db
+    ├── google-calendars.json
+    ├── google-credentials.json
+    ├── google-token.json
+    ├── helpers
+    │   ├── device_sleep_workweek.py
+    │   ├── mqtt.py
+    │   ├── nws_weather.json
+    │   ├── nws_weather.py
+    │   ├── renderer.py
+    │   ├── renderer_calendar_google.py
+    │   ├── renderer_calendar_outlook.py
+    │   └── string_filters.py
+    ├── icons
+    │   ├── <icon SVG files>
+    │   ├── readme.md
+    │   └── weather-icon-map.json
+    ├── kindle.py
+    ├── mqtt2influxdb.py
+    ├── nws_weather.json
+    ├── o365_token.txt
+    ├── paths.py
+    ├── plugin_base.py
+    ├── plugin_manager.py
+    ├── plugins
+    │   ├── calendar_google.py
+    │   ├── calendar_outlook.py
+    │   ├── device_home_office.py
+    │   ├── device_kitchen.py
+    │   ├── devices.py
+    │   ├── plugin_string_filters.py
+    │   └── server_admin.py
+    ├── repo.py
+    ├── requirements.txt
+    ├── serve.sh
+    ├── string-filters.json
+    └── theme.py
+
 
 ## Installation
 

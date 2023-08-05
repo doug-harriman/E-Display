@@ -1,0 +1,11 @@
+fastapi
+pillow
+nicegui
+O365
+pyvips
+pexpect
+google-auth
+google-api-python-client
+google_auth_oauthlib
+paho-mqtt
+influxdb
