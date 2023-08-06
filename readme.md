@@ -85,25 +85,16 @@ There are many impressive projects out there that do similar things.  They've bo
 
 ## Installation
 
-* `sudo apt install libvips`
-    * [PyVips](https://libvips.github.io/pyvips/index.html) to load and render SVG into Pillow images.
-* `pip install -r requirements.txt` (in server directory)
+The server should be set up and running before setting up the devices.  The devices will expect the server to be available so that they can pull images from it.
 
-## Configuration
+### Server
 
-* Copy `google-credentials.json` and `google-token.json` to server.
-* Google Calendar
-    * When token expires the token file will be deleted if it cannot be refreshed.
-    * Manually run the `calendar_google.py` script.
-    * Follow the link it provides & confirm access.
-    * `google-token.json` will be created.
+Installation and configuration for the server are covered in the [Server](server/readme.md) documentation.
 
-## Run
+### Kindle
 
-```bash
-cd server
-./serve.sh
-```
+Installation and configuration for using Kindle Paperwhite devices for an E-Display are covered in the [Kindle](kindle/readme.md) documentation.
+
 
 ## Creating a New Device Image
 

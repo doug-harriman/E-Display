@@ -1,11 +1,11 @@
-# Kindle E-Display Setup
+# Kindle Setup for E-Display 
 
 ## Overview
 
-Overall, the intent of the Kindle setup is to:
+The intent of the Kindle setup is to:
 
 * Display an image pulled from the server so that the Kindle software is as simple as possible.  All updates to the image generation can be performed on the server.
-* Put the Kindle to sleep between image updates so that the battery lasts as long as possible.  Note that the server returns the time to sleep to the Kindle, so the Kindle can be put to sleep for a variable amount of time depending on day of week and time of day.
+* Put the Kindle to sleep between image updates so that the battery lasts as long as possible.  Note that the server returns the time to sleep to the Kindle, so the Kindle can be put to sleep for a variable amount of time depending on day of week and time of day.  If things are working properly, you should be able to to get several weeks of runtime between charges.
 
 The Kindle setup consists of:
 
@@ -99,20 +99,15 @@ https://s3.amazonaws.com/G7G_Firmwar...ndle_5.3.3.bin)
     * Set `DEVICE` variable to the name for this device.
          * This string will be displayed on the device, and is used to determine which image to return.
 * Copy files to the Kindle:
-    * ssh in and create directory: `/mnt/us/digital-display`
+    * ssh in and create directory: `/mnt/us/digital-display` (or whatever you want to name it).
     * Copy `init.sh` and `update.sh` from the `kindle` directory in tis project to the `digital-display` directory on the device.
         * You can copy with `scp` or use the Kinkle in USB mass storage mode to copy directly from your PC.
-    * Copy `tmux` from `kindle-binaries` to the `digital-display` directory on the Kindle.
+    * Copy `tmux` from the `kindle` directory to the `digital-display` directory on the Kindle.
 * Run the files
     * Run `init.sh`
     * Run `tmux`
     * Inside of `tmux`, run `update.sh`
-
-### Turn Off Unwanted Kindle Services
-
-* Disable going to sleep: `lipc-set-prop -i com.lab126.powerd preventScreenSaver 1`
-* Disable back light: `/bin/echo -n 0 > /sys/devices/system/fl_tps6116x/fl_tps6116x0/fl_intensity`
-* Put to sleep: `echo "mem" > /sys/power/state`
+    * You can now disconnect and the script will continue to run.
 
 #### References
 * [Prevent Kindle from phoning home](https://blitiri.com.ar/p/other/kindle/#id7)
