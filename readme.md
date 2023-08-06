@@ -6,7 +6,7 @@ The image below shows my two devices, one displaying my work calendar in a portr
 
 ![Kindles](doc/kindles.jpg)
 
-||||
+|Server Pages|||
 |-|-|-|
 |![Devices](doc/page-devices.png)|![Admin](doc/page-admin.png)|![Subject Filter](doc/page-event-subject-filter.png)
 |![Sleep Delay](doc/page-sleep-delay-manager.png)|![Google Calendar Selection](doc/page-google-calendar-selection.png)|![Outlook Authentication Request](doc/page-outlook-auth-request.png)
@@ -23,29 +23,32 @@ I know there's a lot of stuff here that could be greatly improved.  Please submi
 
 There are many impressive projects out there that do similar things.  They've both inspired this project and provided great references for technical implementations.  Some great projects to check out:
 
-* [Matt Healy](https://matthealy.com/kindle).
-* [Kindle Signage](https://github.com/bitcraft/kindle-signage) project by Lief Theden aka "bitcraft".
-* [lots of other cool apps](https://www.mobileread.com/forums/showthread.php?t=128704&highlight=wake+sleep+command).
-* [Weather Display](https://mpetroff.net/2012/09/kindle-weather-display/)
-    * [Updated version](https://github.com/DDRBoxman/kindle-weather)
+* [Matt Healy's](https://matthealy.com/kindle) project was the one that originally inspired me.  
+    * I preferred to directly generate images for specific devices rather than generate web pages then convert to images.
+    * He provides great instructions for the install process.  Great overview.
+    * I'm still working on getting a frame like he has.  
+* A cuple of weather display projects that I really liked due to their use of weather icons:
+    * [Weather Display](https://mpetroff.net/2012/09/kindle-weather-display/)
+    * [Kindle Weather](https://github.com/DDRBoxman/kindle-weather)
         * SVG Files for weather icons, fonts too.
-* [Detailed system control](https://github.com/DDRBoxman/kindle-weather/blob/master/kindleweather.sh).
-* [More info](https://wiki.marcluerssen.de/index.php?title=Kindle/Weather_Display)
-* [Another](https://github.com/pablojimenezmateo/kindle-wallpaper)
-    * He dumps the file into the screensaver and reboots.
+        * [Great example of managing Kindle services](https://github.com/DDRBoxman/kindle-weather/blob/master/kindleweather.sh).
+* [A wall paper project](https://github.com/pablojimenezmateo/kindle-wallpaper)
+    * Dumps the image file into the screensaver and reboots.
     * Sets a cron job to generate a new screen saver image once per day.
     * SVG files for weather icons.
-* [One with full power saving](https://github-com.translate.goog/nicoh88/kindle-kt3_weatherdisplay_battery-optimized?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en)
-* [Another with power saving](https://www.martinpham.com/2023/01/07/reviving-unused-kindle-ebooks/)
+* Two projects that dive deeper into reducing Kindle power usage:
+    * [One with full power saving](https://github-com.translate.goog/nicoh88/kindle-kt3_weatherdisplay_battery-optimized?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en)
+    * [Another with power saving](https://www.martinpham.com/2023/01/07/reviving-unused-kindle-ebooks/)
+* [A list of other Kindle projects from Mobileread](https://www.mobileread.com/forums/showthread.php?t=128704&highlight=wake+sleep+command).
 
 ## Key System Features
 
 * Image generation performed on server to keep display device code as simple as possible.  This also allows for easy updates to the display without having to update the device.
 * Server code constructed to support multiple display devices, so only a single server is needed.
-* Display device can request sleep time from server, so that it can go into low power mode.  This allows the server to have complex logic to determine sleep duration.
+* Display device can request sleep time from server, so that it can go into low power mode.  This allows the server to have complex logic to determine sleep duration based on a variety of factors.  I use it to reduce my work calendar display refresh rate during non-work hours.
     * Images are be pre-generated just ahead of wake time so that they're ready without wait mimimizing device battery usage.
 * Display device can send basic state information (battery state of charge and local temperature) to server which is stored in an [SQLite3](https://www.sqlite.org/index.html) database.  State information can then be used for image generation.
-* Server code constructed to support plugins, so features can be added easily, and auto-discovered.
+* Server code constructed to support plugins, so features can be added easily and auto-discovered.
 
 ### Feature Details
 * High-res image generation via [Pillow](https://pillow.readthedocs.io/en/stable/).
@@ -63,10 +66,13 @@ There are many impressive projects out there that do similar things.  They've bo
 * Google Calendar
     * Query events
     * Generate one week calendar image.
+    * Select which of your Google calendars to display.
 * Microsoft Outlook 365 Calendar
     * Query events
     * Generate hour by hour event image for the current day.
     * Display hour by hour weather forecast.
+    * Request authentication URL from the web page, and apply the URL.  By default, some Outlook setups required admin approval for access longer than 24 hours.  This simplifies daily re-authentication.
+* Custom string filters to remove unwanted text from event subjects for cleaner display.
 * Display properties for Kindle Paperwhite
     * Screen resolution & size
     * Color maps (grayscale)
@@ -75,7 +81,7 @@ There are many impressive projects out there that do similar things.  They've bo
     * Post state information to MQTT broker.
     * Keeps device software simple.  MQTT data stream without adding MQTT client to device.
     * Additional small MQTT process to push MQTT data to Influx DB.
-* Server software updates via `git pull` from web server.
+* Server software updates via `git pull` from direcltly from web server.
 
 ## Installation
 
