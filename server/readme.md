@@ -40,7 +40,7 @@ The information should be stored in the file: `server/helpers/nws_weather.json`.
 
 File format is:
 
-```json
+```
 {
     "LAT": <LATITUDE>, 
     "LON": <LONGITUDE>, 
