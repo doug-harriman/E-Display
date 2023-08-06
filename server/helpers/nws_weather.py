@@ -225,8 +225,8 @@ class Weather:
 if __name__ == "__main__":
     # Get NWS grid info.
     # Grid Lookup
-    LAT = 45.5455
-    LON = -122.62
+    LAT = 41
+    LON = -120
 
     # Get current weather info
     weather = Weather(lat=LAT, lon=LON)

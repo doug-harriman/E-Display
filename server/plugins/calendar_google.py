@@ -104,7 +104,8 @@ class CalendarGoogle(CalendarBase):
         All active calendars are queried.
 
         Args:
-            date (dt.datetime, optional): Date for which to get events. Defaults to dt.date.today().
+            date (datetime.datetime, optional): Date for which to get events.
+                                                Defaults to datetime.date.today().
 
         Raises:
             ValueError: If no valid calendar names are provided.

@@ -79,7 +79,8 @@ class CalendarOutlook(CalendarBase):
         Queries the online database for events on the specified date.
 
         Args:
-            date (datetime.datetime, optional): Date of events. Defaults to dt.date.today().
+            date (datetime.datetime, optional): Date of events.
+                                                Defaults to datetime.date.today().
 
         Returns:
             list: List of events on date of interest.
