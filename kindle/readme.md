@@ -122,8 +122,3 @@ https://s3.amazonaws.com/G7G_Firmwar...ndle_5.3.3.bin)
 * Run `tmux` to start a tmux session.
 * Run `update.sh` to start the update script.
 * Disconnect.
-
-## Open Issues/Tasks
-
-- [ ] `init.sh` doesn't work correctly.  Many services remain running, but the script reports errors.
-- [ ] Getting some instances of device image not found.  
