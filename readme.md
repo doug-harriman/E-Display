@@ -2,7 +2,14 @@
 
 Image server for remote electronic displays such as a Kindle.
 
+The image below shows my two devices, one displaying my work calendar in a portrait orientation, the other displaying the family calendar for the week in landscape.
+
 ![Kindles](doc/kindles.jpg)
+
+||||
+|-|-|-|
+|![Devices](doc/page-devices.png)|![Admin](doc/page-admin.png)|![Subject Filter](doc/page-event-subject-filter.png)
+|![Sleep Delay](doc/page-sleep-delay-manager.png)|![Google Calendar Selection](doc/page-google-calendar-selection.png)|![Outlook Authentication Request](doc/page-outlook-auth-request.png)
 
 ## Motivation
 
