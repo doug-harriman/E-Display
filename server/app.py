@@ -95,4 +95,4 @@ if __name__ in {"__main__", "__mp_main__"}:
 
     print("--- Starting Server ---", flush=True)
 
-    ui.run(title="Kindle Dashboard", port=8000, favicon=PAGE_ICON)
+    ui.run(title="E-Display Manager", port=8000, favicon=PAGE_ICON)

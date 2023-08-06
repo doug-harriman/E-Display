@@ -18,7 +18,7 @@ def header():
 
     with ui.header(elevated=True).classes(replace="items-center"):
         with ui.row().classes("items-center justify-between").style("padding:5px;"):
-            ui.markdown("### Kindle E-Display Image Server")
+            ui.markdown("### E-Display Image Server")
 
             with ui.tabs() as tabs:
                 for plugin in app.plugin_manager.plugins:
