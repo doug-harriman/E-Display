@@ -11,26 +11,28 @@
 lipc-set-prop -i com.lab126.powerd preventScreenSaver 1
 
 # Stop other Kindle services
-export PATH=${PATH}:/sbin
-initctl -q stop framework
-initctl -q stop tmd  # transfer manager daemon
-initctl -q stop phd  # phone home daemon
-initctl -q stop webreader
-initctl -q stop cmd
-# initctl stop volumd # manages device mounting.  May want to leave alone.
-initctl -q stop lipc-wait-event
-initclt -q stop lab126_gui
+stop framework
+stop tmd  # transfer manager daemon
+stop phd  # phone home daemon
+stop webreader
+stop cmd
 
-# Unverified
+# This bit copied from:
+# https://github.com/DDRBoxman/kindle-weather/blob/48fc8984ebcbf3317aab5174889cee378a2bb26c/kindleweather.sh#L57C1-L62C17
+trap "" SIGTERM
+stop lab126_gui
+# NOTE: Let the framework teardown finish, so we don't start before the black screen...
+usleep 1250000
+# And remove the trap like a ninja now!
+trap - SIGTERM
+
 # from: https://www.martinpham.com/2023/01/07/reviving-unused-kindle-ebooks/
-initclt -q stop x
-initclt -q stop otaupd
-initclt -q stop todo
-initclt -q stop mcsd
-initclt -q stop archive
-initclt -q stop dynconfig
-initclt -q stop dpmd
-initclt -q stop appmgrd
-initclt -q stop stackdumpd
+stop x
+stop otaupd
+stop todo
+stop archive
+stop dynconfig
+stop dpmd
+stop appmgrd
 
 
