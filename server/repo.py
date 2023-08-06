@@ -150,7 +150,7 @@ class Commit:
             int: Pull request number of commit.
         """
 
-        pr = re.search("\(pull request #(\d+)\)", self.subject)
+        pr = re.search(r"\(pull request #(\d+)\)", self.subject)
         if pr is None:
             return None
 
@@ -476,7 +476,7 @@ class Repo:
         commits = [json.loads(commit) for commit in commits]
 
         ids = [
-            int(re.search("\(pull request #(\d+)\)", commit["subject"]).group(1))
+            int(re.search(r"\(pull request #(\d+)\)", commit["subject"]).group(1))
             for commit in commits
         ]
 
