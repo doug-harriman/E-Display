@@ -102,6 +102,9 @@ Installation and configuration for using Kindle Paperwhite devices for an E-Disp
 
 ## Next Tasks
 
+- [ ] Server: Move all config/credential files to a single directory.
+    - This would make it easier to sync files to the server.
+    - Could then provide an upload/download functionality.
 - [ ] Server: Family calendar image weather added
 - [ ] Server: Review TODO's
 - [ ] Server: Retrieve google cal events with async to speed up download of multiple calendars.
