@@ -7,6 +7,7 @@
 
 * [Firmware GitHub](https://github.com/Seeed-Projects/Seeed_TRMNL_Eink_Project)
 * [SEEED Studio Page](https://wiki.seeedstudio.com/trmnl_7inch5_diy_kit_main_page/)
+* [SEEED Studio EE04 Display Board Page](https://wiki.seeedstudio.com/epaper_ee04/)
 * [Overview Blog](https://www.seeedstudio.com/blog/2025/09/19/build-your-own-custom-e-ink-display-with-the-trmnl-diy-kit/)
 * 3D Printed Enclosure Designs
    * [Triangular](https://www.printables.com/model/1354873-triangular-prism-3d-enclosure-for-trmnl-75-og-diy)
