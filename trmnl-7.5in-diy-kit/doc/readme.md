@@ -1,10 +1,11 @@
 # TRMNL 7.5" DIY Kit
 
-# PCA Connections
-
+## PCA Connections
+![pca](pca.png)
 
 ## Links
 
+* [Firmware GitHub](https://github.com/Seeed-Projects/Seeed_TRMNL_Eink_Project)
 * [SEEED Studio Page](https://wiki.seeedstudio.com/trmnl_7inch5_diy_kit_main_page/)
 * [Overview Blog](https://www.seeedstudio.com/blog/2025/09/19/build-your-own-custom-e-ink-display-with-the-trmnl-diy-kit/)
 * 3D Printed Enclosure Designs
