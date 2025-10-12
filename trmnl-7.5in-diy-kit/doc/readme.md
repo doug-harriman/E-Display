@@ -1,5 +1,8 @@
 # TRMNL 7.5" DIY Kit
 
+# PCA Connections
+
+
 ## Links
 
 * [SEEED Studio Page](https://wiki.seeedstudio.com/trmnl_7inch5_diy_kit_main_page/)
