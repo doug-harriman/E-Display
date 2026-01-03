@@ -94,7 +94,8 @@ class RendererBase:
             (x_status_field, y_status),
             f"{battery_soc}%",
             font=fonts[fontsz],
-            fill=Color.GRAY_DARK,
+            # fill=Color.GRAY_DARK,
+            fill=Color.BLACK,
         )
 
     def render_header(
@@ -121,7 +122,10 @@ class RendererBase:
         self.render_battery(battery_soc=battery_soc, position=pos)
 
         # Separator line
-        self._draw.line((x, y, width - 2 * x, y), fill=Color.GRAY_MID)
+        self._draw.line((x, y, width - 2 * x, y),
+                        # fill=Color.GRAY_MID
+                        fill=Color.BLACK
+                        )
         y += y_pad
 
         return y
@@ -150,7 +154,8 @@ class RendererBase:
             (x_status_field, y),
             update_str,
             font=fonts[fontsz],
-            fill=Color.GRAY_DARK,
+            # fill=Color.GRAY_DARK,
+            fill=Color.BLACK,
         )
 
         # Device IP field
@@ -160,7 +165,8 @@ class RendererBase:
             (x_device_ip, y),
             device_ip,
             font=fonts[fontsz],
-            fill=Color.GRAY_LIGHT,
+            # fill=Color.GRAY_LIGHT,
+            fill=Color.BLACK,
         )
 
         # Device Name field
@@ -172,7 +178,8 @@ class RendererBase:
             (x_device_field, y),
             device_field,
             font=fonts[fontsz],
-            fill=Color.GRAY_DARK,
+            # fill.Color.GRAY_DARK,
+            fill=Color.BLACK,
         )
 
 

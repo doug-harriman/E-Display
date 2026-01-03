@@ -87,6 +87,11 @@ class Weather:
         # Number of forecast periods to return
         self._periods = 12
 
+        # Set up logging
+        self._logger = logging.getLogger(__name__)
+        self._logger.setLevel(level=logging.DEBUG)
+
+
     @property
     def forecast(self) -> dict:
         """
@@ -193,6 +198,11 @@ class Weather:
         data = url.rsplit("/", 2)[-2:]
         dn = data[0]  # Day or night
         forcast_short = data[1].split(",")[0]  # forecast short name
+        if "?" in forcast_short:
+            forcast_short = forcast_short.split("?")[0]
+        self._logger.debug(f"Forecast icon: {forcast_short}, {dn}")
+        self._logger.debug(f"URL     : {url}")
+        # self._logger.debug(f"Forecast: {self._forecast}")
         icon_file = icons[forcast_short][dn]
 
         # Load icon and scale to fit

@@ -7,6 +7,7 @@ import logging
 from dateutil import tz
 
 from PIL import Image, ImageDraw
+Image.MAX_IMAGE_PIXELS = None  # Disable DecompressionBombError
 
 from kindle import Color, fonts
 from kindle import ResolutionPortrait as Resolution
@@ -52,6 +53,7 @@ class RendererCalendarOutlook(RendererBase):
         # Outlook calendar is running in test mode until IT
         # provides the necessary permissions to query on demand.
         cal = CalendarOutlook()
+        cal.authenticate()
         # cal.events_load()
         cal.query()
 
@@ -99,6 +101,8 @@ class RendererCalendarOutlook(RendererBase):
         )
 
         # Footer
+        if not data.ipaddr:
+            data.ipaddr = "(not connected)"
         self.render_footer(
             device=device,
             width=Resolution.HORIZ,

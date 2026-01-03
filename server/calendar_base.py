@@ -173,6 +173,7 @@ class CalendarBase:
 
         # Treat current time as if it was at the start of the hour.
         now = now.replace(minute=0, second=0, microsecond=0)
+        now = now.replace(tzinfo=None)
 
         # Filter out past events
         self._events = [evt for evt in self._events if evt.end > now]
