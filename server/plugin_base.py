@@ -100,7 +100,7 @@ class MenuItem(ItemBase):
         Returns a MenuItem as a NiceGUI ui.menu_item.
         """
 
-        return ui.menu_item(self.text, on_click=lambda: ui.open(self.route))
+        return ui.menu_item(self.text, on_click=lambda: ui.navigate(self.route))
 
 
 class TabItem(ItemBase):
@@ -125,7 +125,7 @@ class TabItem(ItemBase):
         self._tooltip = text
 
     def to_tab(self) -> ui.tab:
-        tab = ui.tab(self.text).on("click", lambda: ui.open(self.route))
+        tab = ui.tab(self.text).on("click", lambda: ui.navigate.to(self.route))
 
         if self.tooltip is not None:
             tab.tooltip(self.tooltip)

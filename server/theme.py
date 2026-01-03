@@ -31,7 +31,7 @@ def header():
                         menuitem.to_menu_item()
 
                     ui.separator()
-                    ui.menu_item("Documentation", on_click=lambda: ui.open("/docs"))
+                    ui.menu_item("Documentation", on_click=lambda: ui.navigate.to("/docs"))
                     ui.separator()
                     ui.menu_item("Close", on_click=lambda: menu.close())
 
