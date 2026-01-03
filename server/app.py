@@ -69,7 +69,7 @@ def LoadPlugins():
     if len(fm.filters) == 0:
         # Need at least one filter.
         logger.debug(f"No string filters, saving default to: {filter_file}")
-        filt = StringFilter(regexp="[\(\[<].*?[\)\]>]", replacement="")
+        filt = StringFilter(regexp=r"[\(\[<].*?[\)\]>]", replacement="")
         fm += filt
         fm.save(filename=filter_file)
 

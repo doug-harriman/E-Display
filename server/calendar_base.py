@@ -2,6 +2,7 @@ import dill
 import logging
 import datetime as dt
 import os
+from typing import Self
 
 
 # Logging config
@@ -12,9 +13,9 @@ logger.setLevel(level=logging.DEBUG)
 class EventBase:
     def __init__(
         self,
-        summary: str = None,
-        start: dt.datetime = None,
-        end: dt.datetime = None,
+        summary: str | None = None,
+        start: dt.datetime | None = None,
+        end: dt.datetime | None = None,
         all_day: bool = False,
     ):
         self.summary = summary
@@ -38,11 +39,11 @@ class EventBase:
         return res
 
     @property
-    def summary(self) -> str:
+    def summary(self) -> str | None:
         return self._summary
 
     @summary.setter
-    def summary(self, value: str):
+    def summary(self, value: str | None):
         if not isinstance(value, str):
             raise TypeError("Summary must be a string")
 
@@ -87,7 +88,7 @@ class CalendarBase:
 
         self._events = None
 
-    def add(self, event: EventBase = None):
+    def add(self, event: EventBase | None = None) -> Self:
         """
         Add an event to the calendar.
 
@@ -96,14 +97,14 @@ class CalendarBase:
         """
 
         if event is None:
-            return
+            return Self
 
         if not isinstance(event, EventBase):
             raise TypeError("Event must be of type EventBase")
 
         if event.summary is None or len(event.summary) == 0:
             self._logger.warning("Event summary is empty, event not added")
-            return
+            return Self
 
         if self._events is None:
             self._events = [event]
@@ -112,7 +113,7 @@ class CalendarBase:
 
         return self
 
-    def clear(self) -> None:
+    def clear(self) -> Self:
         """
         Clear the event list.
 
