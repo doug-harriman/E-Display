@@ -210,7 +210,7 @@ async def route_outlook_login():
 
         ui.button(
             "Request Authentication URL",
-            on_click=lambda: ui.open("/outlook/authenticate"),
+            on_click=lambda: ui.navigate.to("/outlook/authenticate"),
         )
 
         ui.label("Paste the authenticated URL below:")
@@ -229,7 +229,7 @@ async def route_outlook_login():
                 router_outlook.userdata = None
 
             # Go to index page.
-            ui.open("/")
+            ui.navigate.to("/")
 
 
 @router_outlook.post("/outlook")
