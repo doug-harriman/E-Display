@@ -14,7 +14,7 @@ from nws_weather import Weather
 from db import DB, DeviceState
 from renderer import RendererBase, text_fill_box
 
-from calendar_outlook import CalendarOutlook
+from calendar_outlook_msal import CalendarOutlook
 
 # Logging config
 logger = logging.getLogger(__name__)

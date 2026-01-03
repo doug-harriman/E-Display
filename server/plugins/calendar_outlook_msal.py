@@ -31,7 +31,7 @@ tab.tooltip = "Read Outlook calendar data"
 plugin = PluginBase()
 plugin += tab
 
-class CalendarOutlookMsal(CalendarBase):
+class CalendarOutlook(CalendarBase):
     """Outlook Calendar read object using MSAL for authentication."""
 
     def __init__(self, test: bool = False):
@@ -249,7 +249,7 @@ def route_outlook_post(auth_url: str = Form()):
 
 if __name__ == "__main__":
 
-    cal = CalendarOutlookMsal()
+    cal = CalendarOutlook()
 
     if not cal.authenticate():
         raise Exception("MSAL Authentication to Outlook Calendar failed")
