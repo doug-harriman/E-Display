@@ -9,7 +9,8 @@ import os
 import pyvips
 from PIL import Image, ImageDraw, ImageFont
 
-from kindle import Color, ResolutionPortrait, fonts
+# from kindle import Color, ResolutionPortrait, fonts
+from trmnl_7_5in import Color, ResolutionPortrait, fonts
 
 # Logging config
 logger = logging.getLogger(__name__)
@@ -185,14 +186,14 @@ def test_text() -> str:
     Returns a string of test text for text_fill_box.
     """
 
-    text = """Lorem ipsum dolor sit amet, consectetur 
-              adipiscing elit, sed do eiusmod tempor incididunt ut 
-              labore et dolore magna aliqua. Ut enim ad minim veniam, 
-              quis nostrud exercitation ullamco laboris nisi ut aliquip 
-              ex ea commodo consequat. Duis aute irure dolor in 
-              reprehenderit in voluptate velit esse cillum dolore eu 
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
-              non proident, sunt in culpa qui officia deserunt mollit 
+    text = """Lorem ipsum dolor sit amet, consectetur
+              adipiscing elit, sed do eiusmod tempor incididunt ut
+              labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip
+              ex ea commodo consequat. Duis aute irure dolor in
+              reprehenderit in voluptate velit esse cillum dolore eu
+              fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+              non proident, sunt in culpa qui officia deserunt mollit
               anim id est laborum."""
     text = " ".join(text.split())
 
