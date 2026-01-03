@@ -9,8 +9,8 @@ from dateutil import tz
 from PIL import Image, ImageDraw
 Image.MAX_IMAGE_PIXELS = None  # Disable DecompressionBombError
 
-from kindle import Color, fonts
-from kindle import ResolutionPortrait as Resolution
+from trmnl_7_5in import Color, fonts
+from trmnl_7_5in import ResolutionPortrait as Resolution
 from nws_weather import Weather
 from db import DB, DeviceState
 from renderer import RendererBase, text_fill_box
@@ -149,7 +149,10 @@ def TimeGrid(
     now = now.replace(minute=0, second=0, microsecond=0)
     for i in range(timeframe_hours):
         # Top Line
-        draw.line((x_base + x_pad, y, x_base + width - x_pad, y), fill=Color.GRAY_MID)
+        draw.line((x_base + x_pad, y, x_base + width - x_pad, y),
+                  fill=Color.BLACK
+                #   fill=Color.GRAY_MID
+                  )
 
         # Hour string
         hour = now + dt.timedelta(hours=i)
@@ -164,7 +167,10 @@ def TimeGrid(
 
         # Mid line
         y_mid = y + row_height / 2
-        draw.line((x_offset, y_mid, x_weather, y_mid), fill=Color.GRAY_LIGHT)
+        draw.line((x_offset, y_mid, x_weather, y_mid),
+                  fill=Color.BLACK
+                #   fill=Color.GRAY_LIGHT
+                  )
 
         # Weather forecast
         if weather is not None and not DEBUG:
@@ -180,7 +186,10 @@ def TimeGrid(
         y += row_height
 
     # Bottom line
-    draw.line((x_base + x_pad, y, x_base + width - x_pad, y), fill=Color.GRAY_MID)
+    draw.line((x_base + x_pad, y, x_base + width - x_pad, y),
+              fill=Color.BLACK
+            #   fill=Color.GRAY_MID
+              )
 
     # Draw in events
     if calendar.upcoming is None:
@@ -236,8 +245,10 @@ def TimeGrid(
             draw.rounded_rectangle(
                 (x_event, y_start, x_weather - x_pad * 2, y_end),
                 radius=5,
-                fill=Color.GRAY_FAINT,
-                outline=Color.GRAY_MID,
+                # fill=Color.GRAY_FAINT,
+                # outline=Color.GRAY_MID,
+                fill=Color.WHITE,
+                outline=Color.BLACK,
             )
 
         # Draw the subject

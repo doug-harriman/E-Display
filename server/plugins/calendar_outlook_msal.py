@@ -3,8 +3,7 @@ import json
 from pathlib import Path
 import tomllib
 from typing import Any, Self
-from datetime import datetime, timedelta, timezone
-import logging
+from datetime import datetime, timedelta
 
 import msal
 import pexpect
@@ -148,7 +147,7 @@ class CalendarOutlook(CalendarBase):
             if not item['isCancelled']:
                 self.add(event)
         self._logger.debug(f"Retrieved {len(events)} events from MS Graph")
-
+        self.sort()
 
 if __name__ == "__main__":
 
