@@ -10,4 +10,4 @@ __pycache__/*
 
 # Credentials and instance specific configs.
 *.json
-o365_token.txt
+ms-auth.toml

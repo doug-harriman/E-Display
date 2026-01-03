@@ -2,13 +2,14 @@ import os
 import requests
 import msal
 from datetime import datetime, timedelta, timezone
-from dotenv import load_dotenv
 import json
+import tomllib
 
 # https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/AppPermissions.ReactView/objectId/eea65c79-5712-4b11-9722-18bde7b4f5a6/appId/65bfa9ac-2627-4d48-86ef-728bb863e903
 # https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationMenuBlade/~/CallAnAPI/appId/65bfa9ac-2627-4d48-86ef-728bb863e903/isMSAApp~/false
 # https://github.com/AzureAD/microsoft-authentication-library-for-python
 
+# Note: Outlook credentials stored in 1Password under Outlook.
 
 MS_GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0"
 SCOPES = ["Calendars.Read"]
@@ -25,9 +26,12 @@ def load_token():
     return None
 
 def get_access_token():
-    load_dotenv()
-    app_id = os.getenv("APPLICATION_ID")
-    tennent_id = os.getenv("TENNANT_ID")
+
+    with open("ms-auth.toml", "rb") as f:
+        config = tomllib.load(f)
+
+    app_id = config["APPLICATION_ID"]
+    tennent_id = config["TENNANT_ID"]
     authority = f'https://login.microsoftonline.com/{tennent_id}'
     app = msal.PublicClientApplication(app_id, authority=authority)
 
