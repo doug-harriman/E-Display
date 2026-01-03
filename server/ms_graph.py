@@ -15,11 +15,11 @@ MS_GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0"
 SCOPES = ["Calendars.Read"]
 TOKEN_CACHE_FILE = "token_cache.json"
 
-def save_token(token):
+def token_save(token):
     with open(TOKEN_CACHE_FILE, "w") as f:
         json.dump(token, f)
 
-def load_token():
+def token_load():
     if os.path.exists(TOKEN_CACHE_FILE):
         with open(TOKEN_CACHE_FILE, "r") as f:
             return json.load(f)
@@ -36,11 +36,11 @@ def get_access_token():
     app = msal.PublicClientApplication(app_id, authority=authority)
 
     # Try to load and use refresh token
-    token = load_token()
+    token = token_load()
     if token and "refresh_token" in token:
         result = app.acquire_token_by_refresh_token(token["refresh_token"], SCOPES)
         if "access_token" in result:
-            save_token(result)
+            token_save(result)
             return result["access_token"]
         # If refresh fails, fall through to device code
 
@@ -51,7 +51,7 @@ def get_access_token():
     print(flow["message"])
     result = app.acquire_token_by_device_flow(flow)
     if "access_token" in result:
-        save_token(result)
+        token_save(result)
         return result["access_token"]
     else:
         raise Exception(f"Failed to get token: {result.get('error_description')}")
