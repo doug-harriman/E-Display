@@ -174,7 +174,7 @@ async def subject_filter_manager():
         with ui.row():
 
             async def button_download(event):
-                ui.open(ROUTE_STRING_FILTER_DOWNOLOAD)
+                ui.navigate.to(ROUTE_STRING_FILTER_DOWNOLOAD)
 
             async def file_upload(event):
                 # Attempt to read in file.
