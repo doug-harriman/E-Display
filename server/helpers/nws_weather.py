@@ -228,12 +228,7 @@ class Weather:
             dpi=ResolutionPortrait.PPI,
             scale=scale
         )
-        icon.write_to_file(icon_path_png,
-                    compression=0,
-                    interlace=False,
-                    dither=0,
-                    effort=10,
-                    Q=100)
+        icon.write_to_file(icon_path_png)
         icon_png = Image.open(icon_path_png)
         logger.debug(f"   scaled size: ({icon.width},{icon.height})")
         logger.debug(f"   png    size: ({icon_png.width},{icon_png.height})")

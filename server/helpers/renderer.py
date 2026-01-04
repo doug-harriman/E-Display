@@ -78,12 +78,7 @@ class RendererBase:
         )
         # Resize icon
         icon = icon.rotate(270)  # Ensure correct orientation
-        icon.write_to_file(icon_path_png,
-                           compression=0,
-                           interlace=False,
-                           dither=0,
-                           effort=10,
-                           Q=100)
+        icon.write_to_file(icon_path_png)
         icon_png = Image.open(icon_path_png)
 
         # Render icon
