@@ -29,12 +29,14 @@ class Color(IntEnum):
 DIR_FONT = "Fonts"
 
 # https://font.download/font/lucida-sans#google_vignette
-FILE_FONT = "LSANS.TTF"
-path_font = os.path.join(os.curdir, DIR_FONT, FILE_FONT)
+FILE_FONT_REG = "LSANS.TTF"
+FILE_FONT_BOLD = "LSANSD.TTF"
+path_font_reg = os.path.join(os.curdir, DIR_FONT, FILE_FONT_REG)
+path_font_bold = os.path.join(os.curdir, DIR_FONT, FILE_FONT_BOLD)
 fonts = {}
-fonts["large"] = ImageFont.truetype(path_font, 32) #64)
-fonts["medium"] = ImageFont.truetype(path_font, 24) #48)
-fonts["medium_small"] = ImageFont.truetype(path_font, 18) #36)
-fonts["small"] = ImageFont.truetype(path_font, 14) #23)
-fonts["tiny"] = ImageFont.truetype(path_font, 9) #18)
+fonts["large"] = ImageFont.truetype(path_font_reg, 32) #64)
+fonts["medium"] = ImageFont.truetype(path_font_reg, 24) #48)
+fonts["medium_small"] = ImageFont.truetype(path_font_reg, 18) #36)
+fonts["small"] = ImageFont.truetype(path_font_bold, 14) #23)
+fonts["tiny"] = ImageFont.truetype(path_font_reg, 9) #18)
 
