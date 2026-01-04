@@ -45,6 +45,7 @@ class RendererCalendarOutlook(RendererBase):
             # Default data since none pushed to server yet.
             data = {"battery_soc": 101, "temperature": 99, "ipaddr": "000.000.0.000"}
             data = DeviceState(**data)
+            db.store(data)
 
         # Get weather info
         weather = Weather()
