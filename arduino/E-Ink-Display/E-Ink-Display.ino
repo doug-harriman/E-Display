@@ -405,6 +405,75 @@ void screen_clear()
     y_pos = Y_START;
 }
 
+void calendar_read()
+{
+    device_state_post();
+    screen_clear();
+
+    // Download file
+    String filename = "/image.png";
+    int resp = service_data_get(String("image"), filename);
+
+    if (resp != HTTP_CODE_OK)
+    {
+        Serial.printf("Network read error: %d\n", resp);
+        epaper.drawString("Network Read Error", x_pos, y_pos);
+        y_pos += Y_DELTA;
+        delay(200);
+    }
+    else
+    {
+        epaper.drawString("File downloaded", x_pos, y_pos);
+        y_pos += Y_DELTA;
+
+        uint32_t err = png.open(filename.c_str(), png_open, png_close, png_read, png_seek, png_draw);
+        if (err != PNG_SUCCESS)
+        {
+            Serial.printf("PNG open error: %d\n", err);
+            epaper.drawString("PNG Open Error", x_pos, y_pos);
+            y_pos += Y_DELTA;
+            delay(200);
+            return;
+        }
+
+        if (png.getWidth() > MAX_IMAGE_WIDTH)
+        {
+            Serial.println("PNG image too wide for display");
+            epaper.drawString("PNG Too Wide", x_pos, y_pos);
+            y_pos += Y_DELTA;
+            delay(200);
+            png.close();
+            return;
+        }
+
+        Serial.printf("image info: (%d x %d), %d bpp, pixel type: %d\n",
+                      png.getWidth(),
+                      png.getHeight(),
+                      png.getBpp(),
+                      png.getPixelType());
+
+        // Decode the PNG file
+        err = png.decode(nullptr, 0);
+        if (err != PNG_SUCCESS)
+        {
+            Serial.printf("PNG decode error: %d\n", err);
+            epaper.drawString("PNG Decode Error", x_pos, y_pos);
+            y_pos += Y_DELTA;
+            delay(200);
+            png.close();
+            return;
+        }
+        y_pos += png.getHeight();
+
+        // Update display
+        epaper.update();
+
+        // Close the file
+        png.close();
+
+    } // HTTP Response OK
+}
+
 void loop()
 {
     // Read button states (buttons are LOW when pressed because of pull-up resistors)
@@ -438,73 +507,7 @@ void loop()
     }
     else if (d2Pressed)
     {
-        // Post device state
-        device_state_post();
-
-        screen_clear();
-
-        // Download file
-        String filename = "/image.png";
-        int resp = service_data_get(String("image"), filename);
-
-        if (resp != HTTP_CODE_OK)
-        {
-            Serial.printf("Network read error: %d\n", resp);
-            epaper.drawString("Network Read Error", x_pos, y_pos);
-            y_pos += Y_DELTA;
-            delay(200);
-        }
-        else
-        {
-            epaper.drawString("File downloaded", x_pos, y_pos);
-            y_pos += Y_DELTA;
-
-            uint32_t err = png.open(filename.c_str(), png_open, png_close, png_read, png_seek, png_draw);
-            if (err != PNG_SUCCESS)
-            {
-                Serial.printf("PNG open error: %d\n", err);
-                epaper.drawString("PNG Open Error", x_pos, y_pos);
-                y_pos += Y_DELTA;
-                delay(200);
-                return;
-            }
-
-            if (png.getWidth() > MAX_IMAGE_WIDTH)
-            {
-                Serial.println("PNG image too wide for display");
-                epaper.drawString("PNG Too Wide", x_pos, y_pos);
-                y_pos += Y_DELTA;
-                delay(200);
-                png.close();
-                return;
-            }
-
-            Serial.printf("image info: (%d x %d), %d bpp, pixel type: %d\n",
-                          png.getWidth(),
-                          png.getHeight(),
-                          png.getBpp(),
-                          png.getPixelType());
-
-            // Decode the PNG file
-            err = png.decode(nullptr, 0);
-            if (err != PNG_SUCCESS)
-            {
-                Serial.printf("PNG decode error: %d\n", err);
-                epaper.drawString("PNG Decode Error", x_pos, y_pos);
-                y_pos += Y_DELTA;
-                delay(200);
-                png.close();
-                return;
-            }
-            y_pos += png.getHeight();
-
-            // Update display
-            epaper.update();
-
-            // Close the file
-            png.close();
-
-        } // HTTP Response OK
+        calendar_read();
 
         // Add a small delay to avoid repeated readings
         delay(200);
