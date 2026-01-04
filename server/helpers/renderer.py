@@ -114,8 +114,7 @@ class RendererBase:
         day_str = f"{today.strftime('%A')}, {today.strftime('%B %-d')}"
         logger.debug(f"Day string: {day_str}")
         fontsz = "large"
-        # self._draw.text((x, y), day_str, font=fonts[fontsz], fill=Color.BLACK)
-        self._draw.text((x, y), "TEST", font=fonts[fontsz], fill=Color.BLACK)
+        self._draw.text((x, y), day_str, font=fonts[fontsz], fill=Color.BLACK)
 
         y += fonts[fontsz].getbbox(day_str)[3] + y_pad
 
