@@ -28,7 +28,7 @@ class Color(IntEnum):
 # Fonts
 DIR_FONT = "Fonts"
 
-# https://font.download/font/lucida-sans#google_vignette
+# https://font.download/font/lucida-sans
 FILE_FONT_REG = "LSANS.TTF"
 FILE_FONT_BOLD = "LSANSD.TTF"
 path_font_reg = os.path.join(os.curdir, DIR_FONT, FILE_FONT_REG)

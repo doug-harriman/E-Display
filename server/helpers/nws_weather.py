@@ -209,7 +209,9 @@ class Weather:
         icon_path_svg = os.path.join(ICON_PATH, icon_file)
         icon_path_png = icon_path_svg.replace(".svg", ".png")
         icon = pyvips.Image.new_from_file(
-            icon_path_svg, dpi=ResolutionPortrait.PPI, scale=1
+            icon_path_svg,
+            dpi=ResolutionPortrait.PPI,
+            scale=1
         )
 
         # Determine scale factor
@@ -220,8 +222,18 @@ class Weather:
         logger.debug(
             f"Icon space min dim: {icon_space}, Current size: {icon_size}, Scale: {scale}"
         )
-        icon = icon.resize(scale)
-        icon.write_to_file(icon_path_png)
+        # Reload with updated scale
+        icon = pyvips.Image.new_from_file(
+            icon_path_svg,
+            dpi=ResolutionPortrait.PPI,
+            scale=scale
+        )
+        icon.write_to_file(icon_path_png,
+                    compression=0,
+                    interlace=False,
+                    dither=0,
+                    effort=10,
+                    Q=100)
         icon_png = Image.open(icon_path_png)
         logger.debug(f"   scaled size: ({icon.width},{icon.height})")
         logger.debug(f"   png    size: ({icon_png.width},{icon_png.height})")

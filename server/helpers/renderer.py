@@ -72,12 +72,18 @@ class RendererBase:
         icon_path_svg = os.path.join(ICON_PATH, icon_file)
         icon_path_png = icon_path_svg.replace(".svg", ".png")
         icon = pyvips.Image.new_from_file(
-            icon_path_svg, dpi=ResolutionPortrait.PPI, scale=1
+            icon_path_svg,
+            dpi=ResolutionPortrait.PPI,
+            scale=0.5
         )
         # Resize icon
-        scale = 0.2
-        icon = icon.resize(scale)
-        icon.write_to_file(icon_path_png)
+        icon = icon.rotate(270)  # Ensure correct orientation
+        icon.write_to_file(icon_path_png,
+                           compression=0,
+                           interlace=False,
+                           dither=0,
+                           effort=10,
+                           Q=100)
         icon_png = Image.open(icon_path_png)
 
         # Render icon
@@ -86,7 +92,7 @@ class RendererBase:
 
         # Battery percentage text
         fontsz = "tiny"
-        x_status_field = position[0] + 5
+        x_status_field = position[0] #+ 5
         y_status = position[1] + icon_height - 10
 
         # Center up the battery value
