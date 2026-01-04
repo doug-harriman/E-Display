@@ -31,11 +31,20 @@ DIR_FONT = "Fonts"
 FILE_FONT = "Aileron-Regular.otf"
 
 # Load font(s)
-fonts = {}
 path_font = os.path.join(os.curdir, DIR_FONT, FILE_FONT)
 print(f"Loading font: {path_font}")
-fonts["large"] = ImageFont.FreeTypeFont(path_font, 64)
-fonts["medium"] = ImageFont.FreeTypeFont(path_font, 48)
-fonts["medium_small"] = ImageFont.FreeTypeFont(path_font, 36)
-fonts["small"] = ImageFont.FreeTypeFont(path_font, 23)
-fonts["tiny"] = ImageFont.FreeTypeFont(path_font, 18)
+fonts = {}
+fonts["large"] = ImageFont.FreeTypeFont(path_font, 32) #64)
+fonts["medium"] = ImageFont.FreeTypeFont(path_font, 24) #48)
+fonts["medium_small"] = ImageFont.FreeTypeFont(path_font, 18) #36)
+fonts["small"] = ImageFont.FreeTypeFont(path_font, 11) #23)
+fonts["tiny"] = ImageFont.FreeTypeFont(path_font, 9) #18)
+
+
+# path_font = "/usr/share/fonts/truetype/noto/NotoSansMono-Regular.ttf"
+# fonts = {}
+# fonts["large"] = ImageFont.truetype(path_font, 32) #64)
+# fonts["medium"] = ImageFont.truetype(path_font, 24) #48)
+# fonts["medium_small"] = ImageFont.truetype(path_font, 18) #36)
+# fonts["small"] = ImageFont.truetype(path_font, 11) #23)
+# fonts["tiny"] = ImageFont.truetype(path_font, 9) #18)

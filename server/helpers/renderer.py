@@ -14,7 +14,7 @@ from trmnl_7_5in import Color, ResolutionPortrait, fonts
 
 # Logging config
 logger = logging.getLogger(__name__)
-logger.setLevel(level=logging.ERROR)
+logger.setLevel(level=logging.DEBUG)
 
 # Battery icon path
 ICON_PATH = "./icons/"
@@ -114,7 +114,9 @@ class RendererBase:
         day_str = f"{today.strftime('%A')}, {today.strftime('%B %-d')}"
         logger.debug(f"Day string: {day_str}")
         fontsz = "large"
-        self._draw.text((x, y), day_str, font=fonts[fontsz], fill=Color.BLACK)
+        # self._draw.text((x, y), day_str, font=fonts[fontsz], fill=Color.BLACK)
+        self._draw.text((x, y), "TEST", font=fonts[fontsz], fill=Color.BLACK)
+
         y += fonts[fontsz].getbbox(day_str)[3] + y_pad
 
         # Battery status
