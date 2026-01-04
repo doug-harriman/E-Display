@@ -100,7 +100,7 @@ class MenuItem(ItemBase):
         Returns a MenuItem as a NiceGUI ui.menu_item.
         """
 
-        return ui.menu_item(self.text, on_click=lambda: ui.navigate(self.route))
+        return ui.menu_item(self.text, on_click=lambda: ui.navigate.to(self.route))
 
 
 class TabItem(ItemBase):
