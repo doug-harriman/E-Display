@@ -28,23 +28,25 @@ class Color(IntEnum):
 DIR_FONT = "Fonts"
 
 # https://www.fontsquirrel.com/fonts/aileron
-FILE_FONT = "Aileron-Regular.otf"
+# FILE_FONT = "Aileron-Regular.otf"
 
-# Load font(s)
-path_font = os.path.join(os.curdir, DIR_FONT, FILE_FONT)
-print(f"Loading font: {path_font}")
-fonts = {}
-fonts["large"] = ImageFont.FreeTypeFont(path_font, 32) #64)
-fonts["medium"] = ImageFont.FreeTypeFont(path_font, 24) #48)
-fonts["medium_small"] = ImageFont.FreeTypeFont(path_font, 18) #36)
-fonts["small"] = ImageFont.FreeTypeFont(path_font, 11) #23)
-fonts["tiny"] = ImageFont.FreeTypeFont(path_font, 9) #18)
-
-
-# path_font = "/usr/share/fonts/truetype/noto/NotoSansMono-Regular.ttf"
+# # Load font(s)
+# path_font = os.path.join(os.curdir, DIR_FONT, FILE_FONT)
+# print(f"Loading font: {path_font}")
 # fonts = {}
-# fonts["large"] = ImageFont.truetype(path_font, 32) #64)
-# fonts["medium"] = ImageFont.truetype(path_font, 24) #48)
-# fonts["medium_small"] = ImageFont.truetype(path_font, 18) #36)
-# fonts["small"] = ImageFont.truetype(path_font, 11) #23)
-# fonts["tiny"] = ImageFont.truetype(path_font, 9) #18)
+# fonts["large"] = ImageFont.FreeTypeFont(path_font, 32) #64)
+# fonts["medium"] = ImageFont.FreeTypeFont(path_font, 24) #48)
+# fonts["medium_small"] = ImageFont.FreeTypeFont(path_font, 18) #36)
+# fonts["small"] = ImageFont.FreeTypeFont(path_font, 11) #23)
+# fonts["tiny"] = ImageFont.FreeTypeFont(path_font, 9) #18)
+
+# https://font.download/font/lucida-sans#google_vignette
+FILE_FONT = "LSANS.TTF"
+path_font = os.path.join(os.curdir, DIR_FONT, FILE_FONT)
+fonts = {}
+fonts["large"] = ImageFont.truetype(path_font, 32) #64)
+fonts["medium"] = ImageFont.truetype(path_font, 24) #48)
+fonts["medium_small"] = ImageFont.truetype(path_font, 18) #36)
+fonts["small"] = ImageFont.truetype(path_font, 11) #23)
+fonts["tiny"] = ImageFont.truetype(path_font, 9) #18)
+
