@@ -1,4 +1,5 @@
-# kindle.py  Constants related to Kindle device.
+# trmnl_7_5in.py  Constants related to Seeed Studio 7.5in e-ink terminal.
+# https://www.seeedstudio.com/XIAO-ePaper-EE04-DIY-Bundle-Kit.html
 
 import os
 from enum import IntEnum
@@ -9,7 +10,7 @@ class ResolutionPortrait(IntEnum):
     # Kindle screen resolution, Paper White 1
     HORIZ = 480
     VERT = 800
-    PPI = 123
+    PPI = 110
 
 
 class ResolutionLandscape(IntEnum):
@@ -27,19 +28,6 @@ class Color(IntEnum):
 # Fonts
 DIR_FONT = "Fonts"
 
-# https://www.fontsquirrel.com/fonts/aileron
-# FILE_FONT = "Aileron-Regular.otf"
-
-# # Load font(s)
-# path_font = os.path.join(os.curdir, DIR_FONT, FILE_FONT)
-# print(f"Loading font: {path_font}")
-# fonts = {}
-# fonts["large"] = ImageFont.FreeTypeFont(path_font, 32) #64)
-# fonts["medium"] = ImageFont.FreeTypeFont(path_font, 24) #48)
-# fonts["medium_small"] = ImageFont.FreeTypeFont(path_font, 18) #36)
-# fonts["small"] = ImageFont.FreeTypeFont(path_font, 11) #23)
-# fonts["tiny"] = ImageFont.FreeTypeFont(path_font, 9) #18)
-
 # https://font.download/font/lucida-sans#google_vignette
 FILE_FONT = "LSANS.TTF"
 path_font = os.path.join(os.curdir, DIR_FONT, FILE_FONT)
@@ -47,6 +35,6 @@ fonts = {}
 fonts["large"] = ImageFont.truetype(path_font, 32) #64)
 fonts["medium"] = ImageFont.truetype(path_font, 24) #48)
 fonts["medium_small"] = ImageFont.truetype(path_font, 18) #36)
-fonts["small"] = ImageFont.truetype(path_font, 11) #23)
+fonts["small"] = ImageFont.truetype(path_font, 14) #23)
 fonts["tiny"] = ImageFont.truetype(path_font, 9) #18)
 

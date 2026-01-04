@@ -159,7 +159,7 @@ class Weather:
         width: int = 100,
         height: int = 100,
     ) -> None:
-        from kindle import Color, fonts, ResolutionPortrait
+        from trmnl_7_5in import Color, fonts, ResolutionPortrait
 
         # Mapping from NWS icon names to icon files
         ICON_PATH = "./icons/"
@@ -184,8 +184,8 @@ class Weather:
         fontsz = "small"
         datastr = f"{self._forecast[hour]['temperature']}°F"
         datasz = fonts[fontsz].getbbox(datastr)
-        x = x_base + round((width - datasz[2]) / 2)
-        y = y_base + height - datasz[3] - 3 * y_pad
+        x = x_base + round((width - datasz[2]) / 2) - 5
+        y = y_base + height - datasz[3] - 1.5 * y_pad
         draw.text((x, y), datastr, font=fonts[fontsz], fill=Color.BLACK)
 
         # Icon size
