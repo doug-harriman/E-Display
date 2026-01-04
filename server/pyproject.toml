@@ -16,7 +16,7 @@ dependencies = [
     "paho-mqtt>=2.1.0",
     "pandas>=2.3.3",
     "pexpect>=4.9.0",
-    "pillow>=12.1.0",
+    "pillow==11.3.0",
     "pydantic>=2.12.5",
     "pyvips>=3.1.1",
     "sh>=2.2.2",
