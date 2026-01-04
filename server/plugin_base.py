@@ -151,7 +151,7 @@ class DeviceItem(ItemBase):
         db = DB()
         if name not in db.devices:
             # Default data since none pushed to server yet.
-            data = {"battery_soc": 101, "temperature": 99, "ipaddr": "000.000.0.000"}
+            data = {"device": name, "battery_soc": 101, "temperature": 99, "ipaddr": "000.000.0.000"}
             data = DeviceState(**data)
             db.store(data)
 
