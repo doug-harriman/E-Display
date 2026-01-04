@@ -11,7 +11,7 @@ from typing import Union
 
 import paths
 from renderer import RendererBase
-
+from db import DB, DeviceState
 
 logger = logging.getLogger(__name__)
 logger.setLevel(level=logging.DEBUG)
@@ -134,7 +134,7 @@ class TabItem(ItemBase):
 
 
 class DeviceItem(ItemBase):
-    def __init__(self, name: str):
+    def __init__(self, name: str = "Default"):
         super().__init__(name, route=None)
 
         self._renderer = None
@@ -143,6 +143,17 @@ class DeviceItem(ItemBase):
         self._sleep_delay_enabled = True
         self._sleep_delay = dt.timedelta(hours=1)
         self._sleep_delay_fcn = None
+
+        self._name = name
+
+        # If no DB entry for this device, add one.
+        # Get device info.
+        db = DB()
+        if name not in db.devices:
+            # Default data since none pushed to server yet.
+            data = {"battery_soc": 101, "temperature": 99, "ipaddr": "000.000.0.000"}
+            data = DeviceState(**data)
+            db.store(data)
 
     def to_dict(self):
         fcn = self.sleep_delay_fcn
