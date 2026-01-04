@@ -58,7 +58,8 @@ class RendererCalendarOutlook(RendererBase):
         cal.query()
 
         # Create the base image
-        mode = "L"  # 8-bit grayscale.
+        # mode = "L"  # 8-bit grayscale.
+        mode = "1"  # 1-bit pixels, black and white, stored with one pixel per byte.
         background = Color.WHITE
         self._image = Image.new(mode, (Resolution.HORIZ, Resolution.VERT), background)
         self._draw = ImageDraw.Draw(self._image)  # drawing context
