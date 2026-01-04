@@ -138,7 +138,7 @@ float readBatteryVoltage()
 }
 
 // Converts battery voltage value to string.
-String batteryStatus(float bat_v)
+String batteryVoltageToString(float bat_v)
 {
     // Convert to string
     if (bat_v >= 4.0)
@@ -164,7 +164,29 @@ String batteryStatus(float bat_v)
 String readBatteryStatus()
 {
     float bat_v = readBatteryVoltage();
-    return batteryStatus(bat_v);
+    return batteryVoltageToString(bat_v);
+}
+
+String readBatterySoC()
+{
+    float bat_v = readBatteryVoltage();
+    if (bat_v >= 3.65)
+    {
+        return "100%";
+    }
+    else if (bat_v >= 3.3)
+    {
+        return "80%";
+    }
+    else if (bat_v >= 3.2)
+    {
+        return "50%";
+    }
+    else if (bat_v >= 3.0)
+    {
+        return "20%";
+    }
+    return "5%";
 }
 
 String service_url_get(String api)
@@ -270,6 +292,55 @@ int service_data_get(String service, String &data)
     return httpCode;
 }
 
+void device_state_post()
+{
+    // Connected?
+    int conn_status = WiFi.status();
+    if (conn_status != WL_CONNECTED)
+    {
+        Serial.printf("WiFi not connected, status: %d\n", conn_status);
+        return;
+    }
+
+    // URL for service for this device
+    String url = String(SERVER);
+    url.concat("/state");
+    Serial.printf("Status URL: %s\n", url.c_str());
+    delay(10);
+
+    // Prepare JSON payload
+    String payload = String("{");
+    payload.concat("\"device\":\"");
+    payload.concat(DEVICE);
+    payload.concat("\",");
+
+    payload.concat("\"battery\": \"");
+    payload.concat(readBatterySoC());
+    payload.concat("\",");
+
+    payload.concat("\"temp\":\"");
+    payload.concat("72F");
+    payload.concat("\"");
+
+    payload.concat("}");
+
+    // Post data
+    HTTPClient http;
+    http.begin(url);
+    http.addHeader("Content-Type", "application/json");
+    Serial.println("Posting status: " + payload);
+    int httpCode = http.POST(payload);
+    if (httpCode != HTTP_CODE_OK)
+    {
+        Serial.printf("Status post error: %d\n", httpCode);
+    }
+    else
+    {
+        Serial.println("Status posted successfully");
+    }
+    http.end();
+}
+
 // Open the PNG file from LittleFS
 PNG png;
 fs::File _png_file;
@@ -326,6 +397,14 @@ int png_draw(PNGDRAW *pDraw)
     return png.getWidth();
 }
 
+void screen_clear()
+{
+    // Clear screen
+    epaper.fillScreen(TFT_WHITE);
+    epaper.update();
+    y_pos = Y_START;
+}
+
 void loop()
 {
     // Read button states (buttons are LOW when pressed because of pull-up resistors)
@@ -336,14 +415,15 @@ void loop()
     // Print button states if any button is pressed
     if (d1Pressed)
     {
-        float v_bat = readBatteryVoltage();
-        String status_str = batteryStatus(v_bat);
+        screen_clear();
+        String status_str = readBatteryStatus();
         Serial.printf("Battery: %s", status_str);
         Serial.println();
 
         // Write to screen
         String disp_str = String("Battery: ");
         disp_str.concat(status_str);
+        float v_bat = readBatteryVoltage();
         String v_str = String(v_bat, 2);
         disp_str.concat(" (");
         disp_str.concat(v_str);
@@ -358,10 +438,10 @@ void loop()
     }
     else if (d2Pressed)
     {
-        // Clear screen
-        epaper.fillScreen(TFT_WHITE);
-        epaper.update();
-        y_pos = Y_START;
+        // Post device state
+        device_state_post();
+
+        screen_clear();
 
         // Download file
         String filename = "/image.png";
