@@ -74,21 +74,20 @@ class RendererBase:
         icon = pyvips.Image.new_from_file(
             icon_path_svg,
             dpi=ResolutionPortrait.PPI,
-            scale=0.5
+            scale=0.4
         )
         # Resize icon
-        icon = icon.rotate(270)  # Ensure correct orientation
+        # icon = icon.rotate(270)  # Ensure correct orientation
         icon.write_to_file(icon_path_png)
         icon_png = Image.open(icon_path_png)
 
         # Render icon
-        icon_height = 48
         self._draw._image.paste(icon_png, position, icon_png)
 
         # Battery percentage text
         fontsz = "tiny"
-        x_status_field = position[0] #+ 5
-        y_status = position[1] + icon_height - 10
+        x_status_field = position[0] + 10
+        y_status = position[1] + 28
 
         # Center up the battery value
         self._draw.text(
@@ -120,7 +119,7 @@ class RendererBase:
         y += fonts[fontsz].getbbox(day_str)[3] + y_pad
 
         # Battery status
-        pos = (width - 48, 8)
+        pos = (width - 42, 0)
         self.render_battery(battery_soc=battery_soc, position=pos)
 
         # Separator line

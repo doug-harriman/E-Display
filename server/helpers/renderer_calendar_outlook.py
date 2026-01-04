@@ -54,7 +54,6 @@ class RendererCalendarOutlook(RendererBase):
         # provides the necessary permissions to query on demand.
         cal = CalendarOutlook()
         cal.authenticate()
-        # cal.events_load()
         cal.query()
 
         # Create the base image
@@ -69,7 +68,6 @@ class RendererCalendarOutlook(RendererBase):
         # Add text
         x = 10
         y = 0
-        x_pad = 5
         y_pad = 4
 
         # Header
