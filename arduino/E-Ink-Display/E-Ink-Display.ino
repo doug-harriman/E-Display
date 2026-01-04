@@ -73,7 +73,7 @@ void setup()
 
     // Configure display
     epaper.begin();
-    epaper.setRotation(0);
+    epaper.setRotation(1); // Landscape
     epaper.fillScreen(TFT_WHITE);
     epaper.setTextColor(TFT_BLACK, TFT_WHITE);
     epaper.setTextSize(TEXT_SZ);
