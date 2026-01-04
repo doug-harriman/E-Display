@@ -39,7 +39,7 @@ const char *PASSWD = "3135Charlie04";
 
 // Server
 const String SERVER = "http://192.168.0.120:8123";
-const String DEVICE = "kitchen";
+const String DEVICE = "home-office";
 
 #define FORMAT_LITTLEFS_IF_FAILED true
 
@@ -365,7 +365,7 @@ void loop()
 
         // Download file
         String filename = "/image.png";
-        int resp = service_data_get(String("test_image"), filename);
+        int resp = service_data_get(String("image"), filename);
 
         if (resp != HTTP_CODE_OK)
         {
