@@ -46,17 +46,38 @@ const String DEVICE = "home-office";
 // Instantiate display driver object
 EPaper epaper = EPaper();
 
+// Serial status aware printing
+void s_println(String msg)
+{
+    if (!Serial)
+    {
+        return;
+    }
+    Serial.println(msg);
+}
+
+void s_print(String msg)
+{
+    if (!Serial)
+    {
+        return;
+    }
+    s_print(msg);
+}
+
 void setup()
 {
     // Initialize serial communication
     Serial.begin(115200);
-    while (!Serial)
-    {
-        ; // Wait for serial port to connect
-    }
-    delay(1000);
 
-    Serial.println("TRMNL DIY Kit");
+    // Wait for the serial port to connect for up to 5 seconds
+    unsigned long timeout = millis();
+    while (!Serial && millis() - timeout < 5000)
+    {
+        delay(10);
+    }
+
+    s_println("TRMNL DIY Kit");
 
     // Configure button pins as inputs with internal pull-up resistors
     pinMode(BUTTON_D1, INPUT_PULLUP);
@@ -81,16 +102,19 @@ void setup()
     // Start file system
     if (!LittleFS.begin(true, "/littlefs"))
     {
-        Serial.println("Failed to mount LittleFS");
+        s_println("Failed to mount LittleFS");
     }
     else
     {
-        Serial.println("LittleFS mounted successfully");
+        s_println("LittleFS mounted successfully");
     }
 
     // WiFi Connect
-    Serial.print("Connecting WiFi: ");
-    Serial.println(SSID);
+    if (Serial)
+    {
+        s_print("Connecting WiFi: ");
+    }
+    s_println(String(SSID));
 
     WiFi.setHostname(HOSTNAME.c_str());
     WiFi.mode(WIFI_STA);
@@ -99,11 +123,11 @@ void setup()
     while (WiFi.status() != WL_CONNECTED)
     {
         delay(250);
-        Serial.print(".");
+        s_print(".");
     }
-    Serial.println("");
-    Serial.print("connected, IP: ");
-    Serial.println(WiFi.localIP());
+    s_println("");
+    s_print("connected, IP: ");
+    s_println(String(WiFi.localIP()));
 
     String ip_str = String("Connected - IP:");
     ip_str.concat(WiFi.localIP().toString());
@@ -214,13 +238,19 @@ int service_data_get(String service, String &data)
     int conn_status = WiFi.status();
     if (conn_status != WL_CONNECTED)
     {
-        Serial.printf("WiFi not connected, status: %d\n", conn_status);
+        if (Serial)
+        {
+            Serial.printf("WiFi not connected, status: %d\n", conn_status);
+        }
         return conn_status;
     }
 
     // URL for service for this device
     String url = service_url_get(service);
-    Serial.printf("Service URL: %s\n", url.c_str());
+    if (Serial)
+    {
+        Serial.printf("Service URL: %s\n", url.c_str());
+    }
     delay(10);
 
     // Request data
@@ -238,12 +268,12 @@ int service_data_get(String service, String &data)
     fs::File file = fs::File();
     if (use_file)
     {
-        Serial.println("Opening file for write: " + data);
+        s_println("Opening file for write: " + data);
         file = LittleFS.open(data.c_str(), "w");
 
         if (!file)
         {
-            Serial.println("Failed to open file for writing");
+            s_println("Failed to open file for writing");
             http.end();
             return -1;
         }
@@ -263,7 +293,7 @@ int service_data_get(String service, String &data)
             // Read bytes into the buffer
             int c = stream->readBytes(buf, ((size > sizeof(buf)) ? sizeof(buf) : size));
             total_read += c;
-            Serial.println("   bytes read: " + String(total_read));
+            s_println("   bytes read: " + String(total_read));
             if (use_file)
             {
                 file.write(buf, c);
@@ -285,7 +315,7 @@ int service_data_get(String service, String &data)
     if (use_file)
     {
         file.close();
-        Serial.println("File write complete");
+        s_println("File write complete");
     }
 
     http.end();
@@ -298,14 +328,20 @@ void device_state_post()
     int conn_status = WiFi.status();
     if (conn_status != WL_CONNECTED)
     {
-        Serial.printf("WiFi not connected, status: %d\n", conn_status);
+        if (Serial)
+        {
+            Serial.printf("WiFi not connected, status: %d\n", conn_status);
+        }
         return;
     }
 
     // URL for service for this device
     String url = String(SERVER);
     url.concat("/state");
-    Serial.printf("Status URL: %s\n", url.c_str());
+    if (Serial)
+    {
+        Serial.printf("Status URL: %s\n", url.c_str());
+    }
     delay(10);
 
     // Prepare JSON payload
@@ -328,15 +364,18 @@ void device_state_post()
     HTTPClient http;
     http.begin(url);
     http.addHeader("Content-Type", "application/json");
-    Serial.println("Posting status: " + payload);
+    s_println("Posting status: " + payload);
     int httpCode = http.POST(payload);
     if (httpCode != HTTP_CODE_OK)
     {
-        Serial.printf("Status post error: %d\n", httpCode);
+        if (Serial)
+        {
+            Serial.printf("Status post error: %d\n", httpCode);
+        }
     }
     else
     {
-        Serial.println("Status posted successfully");
+        s_println("Status posted successfully");
     }
     http.end();
 }
@@ -349,7 +388,7 @@ void *png_open(const char *filename, int32_t *size)
     _png_file = LittleFS.open(filename, "r");
     if (!_png_file)
     {
-        Serial.println("Failed to open PNG file");
+        s_println("Failed to open PNG file");
         return nullptr;
     }
     *size = _png_file.size();
@@ -416,7 +455,11 @@ void calendar_read()
 
     if (resp != HTTP_CODE_OK)
     {
-        Serial.printf("Network read error: %d\n", resp);
+        if (Serial)
+        {
+
+            Serial.printf("Network read error: %d\n", resp);
+        }
         epaper.drawString("Network Read Error", x_pos, y_pos);
         y_pos += Y_DELTA;
         delay(200);
@@ -429,7 +472,11 @@ void calendar_read()
         uint32_t err = png.open(filename.c_str(), png_open, png_close, png_read, png_seek, png_draw);
         if (err != PNG_SUCCESS)
         {
-            Serial.printf("PNG open error: %d\n", err);
+            if (Serial)
+            {
+
+                Serial.printf("PNG open error: %d\n", err);
+            }
             epaper.drawString("PNG Open Error", x_pos, y_pos);
             y_pos += Y_DELTA;
             delay(200);
@@ -438,7 +485,7 @@ void calendar_read()
 
         if (png.getWidth() > MAX_IMAGE_WIDTH)
         {
-            Serial.println("PNG image too wide for display");
+            s_println("PNG image too wide for display");
             epaper.drawString("PNG Too Wide", x_pos, y_pos);
             y_pos += Y_DELTA;
             delay(200);
@@ -446,17 +493,24 @@ void calendar_read()
             return;
         }
 
-        Serial.printf("image info: (%d x %d), %d bpp, pixel type: %d\n",
-                      png.getWidth(),
-                      png.getHeight(),
-                      png.getBpp(),
-                      png.getPixelType());
+        if (Serial)
+        {
+            Serial.printf("image info: (%d x %d), %d bpp, pixel type: %d\n",
+                          png.getWidth(),
+                          png.getHeight(),
+                          png.getBpp(),
+                          png.getPixelType());
+        }
 
         // Decode the PNG file
         err = png.decode(nullptr, 0);
         if (err != PNG_SUCCESS)
         {
-            Serial.printf("PNG decode error: %d\n", err);
+            if (Serial)
+            {
+
+                Serial.printf("PNG decode error: %d\n", err);
+            }
             epaper.drawString("PNG Decode Error", x_pos, y_pos);
             y_pos += Y_DELTA;
             delay(200);
@@ -486,8 +540,11 @@ void loop()
     {
         screen_clear();
         String status_str = readBatteryStatus();
-        Serial.printf("Battery: %s", status_str);
-        Serial.println();
+        if (Serial)
+        {
+            Serial.printf("Battery: %s", status_str);
+        }
+        s_println(String());
 
         // Write to screen
         String disp_str = String("Battery: ");
@@ -514,14 +571,17 @@ void loop()
     }
     else if (d4Pressed)
     {
-        Serial.println("Button 4 pressed");
+        s_println("Button 4 pressed");
 
         String payload = String();
         int resp = service_data_get(String("json"), payload);
 
         if (resp != HTTP_CODE_OK)
         {
-            Serial.printf("Network read error: %d\n", resp);
+            if (Serial)
+            {
+                Serial.printf("Network read error: %d\n", resp);
+            }
             epaper.drawString("Network Read Error", x_pos, y_pos);
             y_pos += Y_DELTA;
             delay(200);
