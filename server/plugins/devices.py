@@ -276,8 +276,8 @@ def post_state(payload: StatePayload = None, request: Request = None):
     data = DeviceState(
         device=payload.device,
         time=dt.datetime.now(),
-        temperature=int(payload.temp[0:2]),
-        battery_soc=int(payload.battery[0:2]),
+        temperature=int(payload.temp.replace("F", "")),
+        battery_soc=int(payload.battery.replace("%", "")),
         ipaddr=request.client.host,
     )
     db.store(data)
