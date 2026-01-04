@@ -81,7 +81,7 @@ async def list_current_server_version_info():
                 ui.markdown(time)
 
         # TODO: Enable/disable button based on if up to date or not.
-        ui.button("Update to Latest", on_click=lambda: ui.open(ROUTE_UPDATE))
+        ui.button("Update to Latest", on_click=lambda: ui.navigate.to(ROUTE_UPDATE))
 
 
 @router_admin.get(ROUTE_UPDATE)
