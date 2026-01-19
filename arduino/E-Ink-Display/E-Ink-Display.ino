@@ -14,6 +14,8 @@
 
 // Deep sleep
 // https://wiki.seeedstudio.com/XIAO_ESP32S3_Consumption/
+// https://randomnerdtutorials.com/esp32-deep-sleep-arduino-ide-wake-up-sources/
+#define USEC_TO_SEC 1000000ULL /* Conversion factor for micro seconds to seconds */
 
 // Define button pins
 const int BUTTON_D1 = D1; // First user button
@@ -62,7 +64,7 @@ void s_print(String msg)
     {
         return;
     }
-    s_print(msg);
+    Serial.print(msg);
 }
 
 void setup()
@@ -72,7 +74,7 @@ void setup()
 
     // Wait for the serial port to connect for up to 5 seconds
     unsigned long timeout = millis();
-    while (!Serial && millis() - timeout < 5000)
+    while (!Serial && millis() - timeout < 1000)
     {
         delay(10);
     }
@@ -110,10 +112,7 @@ void setup()
     }
 
     // WiFi Connect
-    if (Serial)
-    {
-        s_print("Connecting WiFi: ");
-    }
+    s_print("Connecting WiFi: ");
     s_println(String(SSID));
 
     WiFi.setHostname(HOSTNAME.c_str());
@@ -444,10 +443,9 @@ void screen_clear()
     y_pos = Y_START;
 }
 
-void calendar_read()
+void image_read_and_display()
 {
     device_state_post();
-    screen_clear();
 
     // Download file
     String filename = "/image.png";
@@ -462,7 +460,6 @@ void calendar_read()
         }
         epaper.drawString("Network Read Error", x_pos, y_pos);
         y_pos += Y_DELTA;
-        delay(200);
     }
     else
     {
@@ -479,7 +476,6 @@ void calendar_read()
             }
             epaper.drawString("PNG Open Error", x_pos, y_pos);
             y_pos += Y_DELTA;
-            delay(200);
             return;
         }
 
@@ -488,7 +484,6 @@ void calendar_read()
             s_println("PNG image too wide for display");
             epaper.drawString("PNG Too Wide", x_pos, y_pos);
             y_pos += Y_DELTA;
-            delay(200);
             png.close();
             return;
         }
@@ -513,7 +508,6 @@ void calendar_read()
             }
             epaper.drawString("PNG Decode Error", x_pos, y_pos);
             y_pos += Y_DELTA;
-            delay(200);
             png.close();
             return;
         }
@@ -526,6 +520,28 @@ void calendar_read()
         png.close();
 
     } // HTTP Response OK
+
+    // Read the time to sleep until next update
+    String payload = String();
+    resp = service_data_get(String("delay"), payload);
+    if (resp != HTTP_CODE_OK)
+    {
+        if (Serial)
+        {
+            Serial.printf("Network read error: %d\n", resp);
+        }
+        epaper.drawString("Network Read Error", x_pos, y_pos);
+        y_pos += Y_DELTA;
+    }
+    else
+    {
+        s_println("Sleep delay: " + payload + " [sec]");
+
+        // Program wake timer & go to sleep
+        int sleep_secs = payload.toInt();
+        esp_sleep_enable_timer_wakeup(sleep_secs * USEC_TO_SEC);
+        esp_deep_sleep_start();
+    }
 }
 
 void loop()
@@ -564,7 +580,7 @@ void loop()
     }
     else if (d2Pressed)
     {
-        calendar_read();
+        image_read_and_display();
 
         // Add a small delay to avoid repeated readings
         delay(200);
@@ -597,4 +613,7 @@ void loop()
         // Add a small delay to avoid repeated readings
         delay(200);
     }
+
+    // Read the calendar
+    image_read_and_display();
 }
