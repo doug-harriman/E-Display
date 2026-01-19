@@ -97,7 +97,7 @@ void setup()
     // Configure display
     epaper.begin();
     epaper.setRotation(1); // Landscape
-    epaper.fillScreen(TFT_WHITE);
+    // epaper.fillScreen(TFT_WHITE);
     epaper.setTextColor(TFT_BLACK, TFT_WHITE);
     epaper.setTextSize(TEXT_SZ);
 
@@ -128,11 +128,11 @@ void setup()
     s_print("connected, IP: ");
     s_println(String(WiFi.localIP()));
 
-    String ip_str = String("Connected - IP:");
-    ip_str.concat(WiFi.localIP().toString());
-    epaper.drawString(ip_str, x_pos, y_pos);
-    y_pos += Y_DELTA;
-    epaper.update();
+    // String ip_str = String("Connected - IP:");
+    // ip_str.concat(WiFi.localIP().toString());
+    // epaper.drawString(ip_str, x_pos, y_pos);
+    // y_pos += Y_DELTA;
+    // epaper.update();
 }
 
 float readBatteryVoltage()
