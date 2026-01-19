@@ -9,6 +9,13 @@ import msal
 import pexpect
 import requests
 
+# If parent directory for this file is not on the search path, add it.
+import os
+import sys
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
 from calendar_base import CalendarBase, EventBase
 
 # TODO: Use pexect like calendar_outlook.py for authentication UI to capture URL & code.
@@ -150,6 +157,8 @@ class CalendarOutlook(CalendarBase):
         self.sort()
 
 if __name__ == "__main__":
+
+
 
     cal = CalendarOutlook()
 
