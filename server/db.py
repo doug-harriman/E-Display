@@ -153,24 +153,26 @@ if __name__ == "__main__":
     # Test code
     db = DB()
 
-    s1 = DeviceState(
-        device="kitchen", time=dt.datetime.now(), temperature=1, battery_soc=1
-    )
-    s2 = DeviceState(
-        device="kitchen",
-        time=dt.datetime.now() + dt.timedelta(seconds=3),
-        temperature=2,
-        battery_soc=3,
-    )
-    s3 = DeviceState(
-        device="home-office",
-        time=dt.datetime.now() + dt.timedelta(seconds=7),
-        temperature=4,
-        battery_soc=5,
-    )
+    # s1 = DeviceState(
+    #     device="kitchen", time=dt.datetime.now(), temperature=1, battery_soc=1
+    # )
+    # s2 = DeviceState(
+    #     device="kitchen",
+    #     time=dt.datetime.now() + dt.timedelta(seconds=3),
+    #     temperature=2,
+    #     battery_soc=3,
+    # )
+    # s3 = DeviceState(
+    #     device="home-office",
+    #     time=dt.datetime.now() + dt.timedelta(seconds=7),
+    #     temperature=4,
+    #     battery_soc=5,
+    # )
 
-    db.store(s1)
-    db.store([s2, s3])
+    # db.store(s1)
+    # db.store([s2, s3])
     dev = db.devices
-    print(dev)
-    print(db.device_latest("kitchen"))
+    print(f"Devices: {dev}")
+    print("Lastest Data:")
+    for d in dev:
+        print(f"\t{db.device_latest(d)}")
