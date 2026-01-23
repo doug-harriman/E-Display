@@ -1,3 +1,14 @@
+# TO-DO
+
+Updated: 202-01-19
+
+- [ ] On laptop hosted server, events are showing at wrong times in image.  TZ issue?
+- [ ] On server, while I can read events when calling `python calendar_outlook_msal.py`, when run from server process, no events are read.  Need to debug.
+- [ ] Authentication through web page has not been updated for MSAL.
+- [ ] All day events render on top of each other.  Need to consolidate and move out of TimeGrid
+- [ ] TRMNL hardware does not have a temperature sensor.  Read from database.
+
+
 # Electronic Image Display Server
 
 Image server for remote electronic displays such as a Kindle.
@@ -14,8 +25,8 @@ The image below shows my two devices, one displaying my work calendar in a portr
 ## Motivation
 
 This project was motivated by two desires:
-1. To have a nice display of my work calendar on my desk, available at a glance without having to open up Outlook.  
-2. To learn about web programming via Python.  
+1. To have a nice display of my work calendar on my desk, available at a glance without having to open up Outlook.
+2. To learn about web programming via Python.
 
 I know there's a lot of stuff here that could be greatly improved.  Please submit pull requests if you'd like to help.
 
@@ -23,10 +34,10 @@ I know there's a lot of stuff here that could be greatly improved.  Please submi
 
 There are many impressive projects out there that do similar things.  They've both inspired this project and provided great references for technical implementations.  Some great projects to check out:
 
-* [Matt Healy's](https://matthealy.com/kindle) project was the one that originally inspired me.  
+* [Matt Healy's](https://matthealy.com/kindle) project was the one that originally inspired me.
     * I preferred to directly generate images for specific devices rather than generate web pages then convert to images.
     * He provides great instructions for the install process.  Great overview.
-    * I'm still working on getting a frame like he has.  
+    * I'm still working on getting a frame like he has.
 * A cuple of weather display projects that I really liked due to their use of weather icons:
     * [Weather Display](https://mpetroff.net/2012/09/kindle-weather-display/)
     * [Kindle Weather](https://github.com/DDRBoxman/kindle-weather)
@@ -110,13 +121,13 @@ Installation and configuration for using Kindle Paperwhite devices for an E-Disp
 - [ ] Server: Retrieve google cal events with async to speed up download of multiple calendars.
     - Google cal asyncio: https://pypi.org/project/aiogc/
     - Gathering results: https://superfastpython.com/asyncio-gather/#:~:text=main%20done-,Example%20of%20gather()%20With%20Return%20Values,-We%20may%20execute
-- [ ] Server: Log to file. 
+- [ ] Server: Log to file.
 - [ ] Server: renderer base should accept a layout parameter (landscape, portrait) and then manage resolution and image rotation internally.
-- [ ] Server: Containerize to Docker.  
+- [ ] Server: Containerize to Docker.
 - [ ] Server: Make MQTT2InfluxDB a daemon and run on container.
 - [ ] Server: Icon updates.
     - Would be nice to have a battery outline icon to better match the weather icons.
-    - During initial icon search, had trouble finding good SVG sets.  After battery icon was implemented found [Icônes](https://icones.js.org/), which has a lot of really good looking options.  
+    - During initial icon search, had trouble finding good SVG sets.  After battery icon was implemented found [Icônes](https://icones.js.org/), which has a lot of really good looking options.
         - From there, these look like good battery icon options:
             - https://icones.js.org/collection/mingcute?s=battery
             - https://icones.js.org/collection/typcn?s=battery
