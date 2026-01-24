@@ -4,6 +4,7 @@ from pathlib import Path
 import tomllib
 from typing import Any, Self
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 import msal
 import pexpect
@@ -122,13 +123,18 @@ class CalendarOutlook(CalendarBase):
             return self
 
         if date is None:
-            # Use today's date as the default
-            date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+            # Use today's date as the default in local timezone
+            local_tz = ZoneInfo("America/Los_Angeles")  # Pacific timezone
+            date = datetime.now(local_tz).replace(hour=0, minute=0, second=0, microsecond=0)
 
         # Prepare date range for the query
         start_of_day = date.replace(hour=0, minute=0, second=0, microsecond=0) # type: ignore
         end_of_day = start_of_day + timedelta(days=1) - timedelta(seconds=1)
         self._logger.debug(f"Querying events for: {start_of_day}")
+
+        # Add timezone preference header
+        headers = self._headers.copy()
+        headers["Prefer"] = 'outlook.timezone="Pacific Standard Time"'  # Pacific timezone
 
         # Query MS Graph for events
         url = (
@@ -137,7 +143,7 @@ class CalendarOutlook(CalendarBase):
             f"&endDateTime={end_of_day.isoformat()}"
             "&$orderby=start/dateTime"
         )
-        resp = requests.get(url, headers=self._headers)
+        resp = requests.get(url, headers=headers)
         resp.raise_for_status()
         if resp.status_code != 200:
             self._logger.debug(f"Error fetching events: {resp.status_code} {resp.text}")
