@@ -166,5 +166,8 @@ if __name__ == "__main__":
         raise Exception("MSAL Authentication to Outlook Calendar failed")
 
     cal.query()
-    for event in cal.events:
-        print(f"Event: {event.summary}, Start: {event.start}, End: {event.end}")
+    if cal.events:
+        for event in cal.events:
+            print(f"Event: {event.summary}, Start: {event.start}, End: {event.end}")
+    else:
+        print("No events found for today.")
