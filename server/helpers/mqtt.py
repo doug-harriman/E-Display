@@ -3,7 +3,7 @@
 import logging
 import datetime as dt
 from paho.mqtt import client as mqtt_client
-from server.db import DeviceState
+from db import DeviceState
 
 # Logging config
 logger = logging.getLogger(__name__)
