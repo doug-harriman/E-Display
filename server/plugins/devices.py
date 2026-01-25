@@ -311,10 +311,15 @@ def post_state(payload: StatePayload = None, request: Request = None):
     elif payload.battery:
         battery_soc = int(payload.battery.replace("%", ""))
 
+    # Temperature handling
+    temperature = 99
+    if payload.temp:
+        temperature = int(payload.temp.replace("F", ""))
+
     data = DeviceState(
         device=payload.device,
         time=dt.datetime.now(),
-        temperature=int(payload.temp.replace("F", "")),
+        temperature=temperature,
         battery_soc=battery_soc,
         battery_voltage=battery_voltage,
         ipaddr=request.client.host,
