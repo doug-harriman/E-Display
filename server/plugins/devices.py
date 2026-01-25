@@ -330,4 +330,4 @@ def post_state(payload: StatePayload = None, request: Request = None):
     # Call post callback handlers
     handler = app.plugin_manager.state_post_handler_get(payload.device)
     if handler:
-        handler(payload)
+        handler(data)

@@ -3,7 +3,7 @@
 import logging
 import datetime as dt
 from paho.mqtt import client as mqtt_client
-from devices import StatePayload
+from server.db import DeviceState
 
 # Logging config
 logger = logging.getLogger(__name__)
@@ -80,7 +80,7 @@ class MQTT:
             logger.debug(f"Failed to send message to topic {topic}")
 
 
-def state_post_handler(payload: StatePayload):
+def state_post_handler(state: DeviceState):
     # Forward the state to the MQTT broker
     MQTT_IP = "192.168.0.120"
     MQTT_PORT = 1885
@@ -88,16 +88,8 @@ def state_post_handler(payload: StatePayload):
     publisher.connect()
 
     # MQTT
-    topic = f"device/{payload.device}"
-
-    msg = "{"  # noqa: E501
-    ts = dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
-    msg += f'"timestamp": "{ts}",'  # noqa: E501
-    if payload.temp:
-        msg += f'"temperature": {int(payload.temp[0:2])},'  # noqa: E501
-    msg += f'"battery_soc": {int(payload.battery[0:2])}'  # noqa: E501
-    msg += "}"  # noqa: E501
-
+    topic = f"device/{state.device}"
+    msg = state.to_mqtt_message()
     publisher.publish(topic, msg)
 
 
