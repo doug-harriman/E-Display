@@ -23,6 +23,23 @@ class DeviceState(SQLModel, table=True):
     battery_voltage: float = -1.0
     ipaddr: Optional[str] = None
 
+    def to_mqtt_message(self) -> str:
+        """
+        Convert DeviceState to MQTT message string.
+
+        Returns:
+            str: MQTT message string.
+        """
+        msg = "{"  # noqa: E501
+        ts = self.time.strftime("%Y-%m-%dT%H:%M:%SZ")
+        msg += f'"timestamp": "{ts}",'  # noqa: E501
+        msg += f'"temperature": {self.temperature},'  # noqa: E501
+        msg += f'"battery_soc": {self.battery_soc},'  # noqa: E501
+        msg += f'"battery_voltage": {self.battery_voltage}'  # noqa: E501
+        msg += "}"  # noqa: E501
+
+        return msg
+
 
 class DB:
     """
