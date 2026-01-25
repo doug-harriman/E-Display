@@ -54,8 +54,11 @@ class RendererCalendarOutlook(RendererBase):
         # Outlook calendar is running in test mode until IT
         # provides the necessary permissions to query on demand.
         cal = CalendarOutlook()
-        cal.authenticate()
-        cal.query()
+        if not cal.authenticate():
+            logger.warning("Outlook authentication failed - calendar will be empty")
+        else:
+            cal.query()
+            logger.debug(f"Calendar query completed - events: {len(cal.events) if cal.events else 0}")
 
         # Create the base image
         # mode = "L"  # 8-bit grayscale.

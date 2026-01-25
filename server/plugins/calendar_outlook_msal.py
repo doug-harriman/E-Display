@@ -46,7 +46,11 @@ class CalendarOutlook(CalendarBase):
 
         self.MS_GRAPH_BASE_URL = "https://graph.microsoft.com/v1.0"
         self.SCOPES = ["Calendars.Read"]
-        self.TOKEN_CACHE_FILE = Path("token_cache.json")
+
+        # Use paths relative to this module's location
+        module_dir = Path(__file__).parent
+        self.TOKEN_CACHE_FILE = module_dir / "token_cache.json"
+        self.MS_AUTH_FILE = module_dir / "ms-auth.toml"
 
         self._authenticated = False
         self._headers = None
@@ -85,10 +89,10 @@ class CalendarOutlook(CalendarBase):
         self._headers = None
 
         # Load MSAL app config
-        if not Path("ms-auth.toml").exists():
-            self._logger.debug("MSAL auth config file 'ms-auth.toml' not found.")
+        if not self.MS_AUTH_FILE.exists():
+            self._logger.debug(f"MSAL auth config file '{self.MS_AUTH_FILE}' not found.")
             return self._authenticated
-        with open("ms-auth.toml", "rb") as f:
+        with open(self.MS_AUTH_FILE, "rb") as f:
             config = tomllib.load(f)
         app_id = config["APPLICATION_ID"]
         tennent_id = config["TENNANT_ID"]
