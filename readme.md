@@ -1,11 +1,9 @@
 # TO-DO
 
-Updated: 202-01-19
+Updated: 2026-01-25
 
-- [ ] On laptop hosted server, events are showing at wrong times in image.  TZ issue?
-- [ ] On server, while I can read events when calling `python calendar_outlook_msal.py`, when run from server process, no events are read.  Need to debug.
+- [ ] Convert battery report to voltage level.  Then can use SW to map SOC based on actual performance.
 - [ ] Authentication through web page has not been updated for MSAL.
-- [ ] All day events render on top of each other.  Need to consolidate and move out of TimeGrid
 - [ ] TRMNL hardware does not have a temperature sensor.  Read from database.
 
 
