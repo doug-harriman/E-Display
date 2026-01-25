@@ -82,10 +82,12 @@ class RendererCalendarOutlook(RendererBase):
         if data.temperature is not None:
             fontsz = "medium_small"
 
-            # Field
-            datastr = f"Inside {data.temperature}°F"
+            # Field - right justified
+            datastr = f"{data.temperature}°F"
+            text_width = fonts[fontsz].getbbox(datastr)[2]
+            x_temp = Resolution.HORIZ - text_width - 10  # 10 pixels padding from right edge
             self._draw.text(
-                (x, y + y_pad), datastr, font=fonts[fontsz], fill=Color.BLACK
+                (x_temp, y + y_pad), datastr, font=fonts[fontsz], fill=Color.BLACK
             )
 
             y += fonts[fontsz].getbbox(datastr)[3] + y_pad
