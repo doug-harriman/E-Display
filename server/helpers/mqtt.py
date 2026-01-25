@@ -93,7 +93,8 @@ def state_post_handler(payload: StatePayload):
     msg = "{"  # noqa: E501
     ts = dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
     msg += f'"timestamp": "{ts}",'  # noqa: E501
-    msg += f'"temperature": {int(payload.temp[0:2])},'  # noqa: E501
+    if payload.temp:
+        msg += f'"temperature": {int(payload.temp[0:2])},'  # noqa: E501
     msg += f'"battery_soc": {int(payload.battery[0:2])}'  # noqa: E501
     msg += "}"  # noqa: E501
 
