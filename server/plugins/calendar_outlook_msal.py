@@ -21,6 +21,23 @@ from calendar_base import CalendarBase, EventBase
 
 # TODO: Use pexect like calendar_outlook.py for authentication UI to capture URL & code.
 
+def get_windows_timezone(iana_tz_name: str) -> str:
+    """Convert IANA timezone name to Windows timezone name for MS Graph API."""
+    # Common timezone mappings
+    tz_map = {
+        "America/New_York": "Eastern Standard Time",
+        "America/Chicago": "Central Standard Time",
+        "America/Denver": "Mountain Standard Time",
+        "America/Los_Angeles": "Pacific Standard Time",
+        "America/Anchorage": "Alaskan Standard Time",
+        "Pacific/Honolulu": "Hawaiian Standard Time",
+        "Europe/London": "GMT Standard Time",
+        "Europe/Paris": "W. Europe Standard Time",
+        "Asia/Tokyo": "Tokyo Standard Time",
+        "Australia/Sydney": "AUS Eastern Standard Time",
+    }
+    return tz_map.get(iana_tz_name, iana_tz_name)
+
 class CalendarOutlook(CalendarBase):
     """Outlook Calendar read object using MSAL for authentication."""
 
@@ -124,27 +141,53 @@ class CalendarOutlook(CalendarBase):
 
         if date is None:
             # Use today's date as the default in local timezone
-            local_tz = ZoneInfo("America/Los_Angeles")  # Pacific timezone
-            date = datetime.now(local_tz).replace(hour=0, minute=0, second=0, microsecond=0)
+            date = datetime.now().astimezone().replace(hour=0, minute=0, second=0, microsecond=0)
 
         # Prepare date range for the query
         start_of_day = date.replace(hour=0, minute=0, second=0, microsecond=0) # type: ignore
         end_of_day = start_of_day + timedelta(days=1) - timedelta(seconds=1)
         self._logger.debug(f"Querying events for: {start_of_day}")
 
+        # Get system timezone for MS Graph API
+        local_tz = datetime.now().astimezone().tzinfo
+        # Try to extract IANA timezone name from ZoneInfo
+        tz_key = None
+        if hasattr(local_tz, 'key'):
+            tz_key = local_tz.key
+        else:
+            # Fallback: try to determine from tzname
+            tz_name = str(local_tz.tzname(None)) if hasattr(local_tz, 'tzname') else None
+            # Common abbreviation to IANA mappings
+            abbr_map = {
+                'PST': 'America/Los_Angeles',
+                'PDT': 'America/Los_Angeles',
+                'MST': 'America/Denver',
+                'MDT': 'America/Denver',
+                'CST': 'America/Chicago',
+                'CDT': 'America/Chicago',
+                'EST': 'America/New_York',
+                'EDT': 'America/New_York',
+            }
+            tz_key = abbr_map.get(tz_name, 'America/New_York')  # Default fallback
+
+        windows_tz = get_windows_timezone(tz_key)
+
         # Add timezone preference header
         headers = self._headers.copy()
-        headers["Prefer"] = 'outlook.timezone="Pacific Standard Time"'  # Pacific timezone
+        headers["Prefer"] = f'outlook.timezone="{windows_tz}"'
+
+        # Convert to UTC for the API (MS Graph expects UTC times in the URL)
+        start_utc = start_of_day.astimezone(dt.timezone.utc)
+        end_utc = end_of_day.astimezone(dt.timezone.utc)
 
         # Query MS Graph for events
         url = (
             f"{self.MS_GRAPH_BASE_URL}/me/calendarView"
-            f"?startDateTime={start_of_day.isoformat()}"
-            f"&endDateTime={end_of_day.isoformat()}"
+            f"?startDateTime={start_utc.strftime('%Y-%m-%dT%H:%M:%SZ')}"
+            f"&endDateTime={end_utc.strftime('%Y-%m-%dT%H:%M:%SZ')}"
             "&$orderby=start/dateTime"
         )
         resp = requests.get(url, headers=headers)
-        resp.raise_for_status()
         if resp.status_code != 200:
             self._logger.debug(f"Error fetching events: {resp.status_code} {resp.text}")
             return self
