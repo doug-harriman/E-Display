@@ -86,13 +86,18 @@ class RendererBase:
 
         # Battery percentage text
         fontsz = "tiny"
-        x_status_field = position[0] + 10
+        battery_text = f"{battery_soc}%"
+        text_bbox = fonts[fontsz].getbbox(battery_text)
+        text_width = text_bbox[2] - text_bbox[0]
+        icon_width = icon_png.width
+
+        # Center the text below the battery icon
+        x_status_field = position[0] + (icon_width - text_width) // 2
         y_status = position[1] + 28
 
-        # Center up the battery value
         self._draw.text(
             (x_status_field, y_status),
-            f"{battery_soc}%",
+            battery_text,
             font=fonts[fontsz],
             # fill=Color.GRAY_DARK,
             fill=Color.BLACK,
