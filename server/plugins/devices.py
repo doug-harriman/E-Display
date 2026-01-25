@@ -114,6 +114,7 @@ async def index():
             t = data.time.strftime("%Y-%m-%d %H:%M:%S")
             ui.markdown(f"* Last Seen: {t}")
             ui.markdown(f"* Temperature: {data.temperature}")
+            ui.markdown(f"* Battery Voltage: {data.battery_voltage} [V]")
             ui.markdown(f"* Battery SOC: {data.battery_soc}")
             ui.markdown(f"* IP Address: {data.ipaddr}")
             ui.link("Image", f"/image/{data.device}", new_tab=True)
