@@ -251,6 +251,31 @@ def TimeGrid(
                 outline=Color.BLACK,
             )
 
+            # Add 45-degree diagonal hatching to indicate busy time
+            hatch_spacing = 8  # pixels between diagonal lines
+            box_width = (x_weather - x_pad * 2) - x_event
+            box_height = y_end - y_start
+
+            # Draw diagonal lines from top-left to bottom-right
+            # Start from the left edge and move right
+            for offset in range(-box_height, box_width, hatch_spacing):
+                # Calculate line start and end points
+                x1 = x_event + offset
+                y1 = y_start
+                x2 = x_event + offset + box_height
+                y2 = y_end
+
+                # Clip to box boundaries
+                if x1 < x_event:
+                    y1 = y_start + (x_event - x1)
+                    x1 = x_event
+                if x2 > x_weather - x_pad * 2:
+                    y2 = y_end - (x2 - (x_weather - x_pad * 2))
+                    x2 = x_weather - x_pad * 2
+
+                # Draw the diagonal line
+                draw.line((x1, y1, x2, y2), fill=Color.BLACK, width=1)
+
         # Draw the subject
         text = text_fill_box(
             draw=draw,
@@ -261,8 +286,25 @@ def TimeGrid(
             spacing=2,
         )
 
+        # Draw white background behind text to cover hatching
+        text_x = x_event + x_pad
+        text_y = y_start + 1
+        text_bbox = draw.multiline_textbbox(
+            (text_x, text_y),
+            text,
+            font=fonts[fontsz],
+            spacing=2,
+        )
+        # Add small padding around text
+        text_padding = 2
+        draw.rectangle(
+            (text_bbox[0] - text_padding, text_bbox[1] - text_padding,
+             text_bbox[2] + text_padding, text_bbox[3] + text_padding),
+            fill=Color.WHITE,
+        )
+
         draw.multiline_text(
-            (x_event + x_pad, y_start - 3),
+            (text_x, text_y),
             text,
             font=fonts[fontsz],
             fill=Color.BLACK,
