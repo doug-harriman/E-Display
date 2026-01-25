@@ -190,28 +190,6 @@ String readBatteryStatus()
     return batteryVoltageToString(bat_v);
 }
 
-String readBatterySoC()
-{
-    float bat_v = readBatteryVoltage();
-    if (bat_v >= 3.65)
-    {
-        return "100%";
-    }
-    else if (bat_v >= 3.3)
-    {
-        return "80%";
-    }
-    else if (bat_v >= 3.2)
-    {
-        return "50%";
-    }
-    else if (bat_v >= 3.0)
-    {
-        return "20%";
-    }
-    return "5%";
-}
-
 String service_url_get(String api)
 {
     String url = String(SERVER);
@@ -349,12 +327,9 @@ void device_state_post()
     payload.concat(DEVICE);
     payload.concat("\",");
 
-    payload.concat("\"battery\": \"");
-    payload.concat(readBatterySoC());
-    payload.concat("\",");
-
-    payload.concat("\"temp\":\"");
-    payload.concat("72F");
+    payload.concat("\"battery_voltage\": \"");
+    float bat_v = readBatteryVoltage();
+    payload.concat(String(bat_v, 2));
     payload.concat("\"");
 
     payload.concat("}");

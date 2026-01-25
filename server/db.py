@@ -18,8 +18,9 @@ class DeviceState(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     device: str
     time: dt.datetime
-    temperature: int
-    battery_soc: int
+    temperature: int = -40
+    battery_soc: int = -1
+    battery_voltage: float = -1.0
     ipaddr: Optional[str] = None
 
 

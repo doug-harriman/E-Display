@@ -28,6 +28,29 @@ logger.setLevel(level=logging.DEBUG)
 # Device routes
 router = APIRouter(tags=["devices"])
 
+
+def battery_voltage_to_soc(voltage: float) -> int:
+    """
+    Convert battery voltage to state of charge percentage.
+    Based on LiPo battery discharge curve.
+
+    Args:
+        voltage: Battery voltage in volts
+
+    Returns:
+        State of charge as percentage (0-100)
+    """
+    if voltage >= 3.65:
+        return 100
+    elif voltage >= 3.3:
+        return 80
+    elif voltage >= 3.2:
+        return 50
+    elif voltage >= 3.0:
+        return 20
+    else:
+        return 5
+
 ROUTE_DEVICE_DELAY_MGR = "/device_delay_manager"
 ROUTE_DEVICE_MAIN_PAGE = "/"
 
@@ -73,6 +96,7 @@ class StatePayload(BaseModel):
     device: str = ""
     temp: str = ""
     battery: str = ""
+    battery_voltage: str = ""
 
 
 @router.page(ROUTE_DEVICE_MAIN_PAGE, favicon=theme.PAGE_ICON)
@@ -270,14 +294,28 @@ def post_state(payload: StatePayload = None, request: Request = None):
     logger.debug(f"Result     : {payload}")
     logger.debug(f"Temperature: {payload.temp}")
     logger.debug(f"Battery SOC: {payload.battery}")
+    logger.debug(f"Battery Voltage: {payload.battery_voltage}")
 
     # Track data in from devices.
     db = DB()
+
+    # Calculate SoC from voltage if provided, otherwise use legacy battery field
+    battery_soc = -1
+    battery_voltage = -1.0
+
+    if payload.battery_voltage:
+        battery_voltage = float(payload.battery_voltage)
+        battery_soc = battery_voltage_to_soc(battery_voltage)
+        logger.debug(f"Calculated SoC from voltage: {battery_voltage}V -> {battery_soc}%")
+    elif payload.battery:
+        battery_soc = int(payload.battery.replace("%", ""))
+
     data = DeviceState(
         device=payload.device,
         time=dt.datetime.now(),
         temperature=int(payload.temp.replace("F", "")),
-        battery_soc=int(payload.battery.replace("%", "")),
+        battery_soc=battery_soc,
+        battery_voltage=battery_voltage,
         ipaddr=request.client.host,
     )
     db.store(data)
