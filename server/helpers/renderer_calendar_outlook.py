@@ -77,8 +77,55 @@ class RendererCalendarOutlook(RendererBase):
         # Header
         y = self.render_header(width=Resolution.HORIZ, battery_soc=data.battery_soc)
 
-        # Kindle state info
+        # Render all-day events (comma-separated, left-justified on same line as temperature)
         x = 10
+        y_allday_start = y
+        max_height_this_section = 0
+
+        if cal.events:
+            all_day_events = [event for event in cal.events if event.all_day]
+            if all_day_events:
+                all_day_text = ", ".join([event.summary for event in all_day_events])
+                fontsz_allday = "small"
+
+                # Calculate available width (subtract temp width and padding)
+                temp_width = 0
+                if data.temperature is not None:
+                    fontsz = "medium_small"
+                    datastr = f"{data.temperature}°F"
+                    temp_width = fonts[fontsz].getbbox(datastr)[2] + 20  # temp + padding
+                available_width = Resolution.HORIZ - 20 - temp_width  # 20 = left + right padding
+
+                # Wrap text to fit
+                wrapped_text = text_fill_box(
+                    draw=self._draw,
+                    text=all_day_text,
+                    font=fonts[fontsz_allday],
+                    width=available_width,
+                    height=100,  # max height for all-day events
+                    spacing=2,
+                )
+
+                # Render the all-day events text
+                self._draw.multiline_text(
+                    (x, y + y_pad),
+                    wrapped_text,
+                    font=fonts[fontsz_allday],
+                    fill=Color.BLACK,
+                    align="left",
+                    spacing=2,
+                )
+
+                # Calculate height of all-day events text
+                text_bbox = self._draw.multiline_textbbox(
+                    (x, y + y_pad),
+                    wrapped_text,
+                    font=fonts[fontsz_allday],
+                    spacing=2,
+                )
+                max_height_this_section = text_bbox[3] - text_bbox[1]
+
+        # Kindle state info (temperature - right justified on same line)
         if data.temperature is not None:
             fontsz = "medium_small"
 
@@ -90,14 +137,27 @@ class RendererCalendarOutlook(RendererBase):
                 (x_temp, y + y_pad), datastr, font=fonts[fontsz], fill=Color.BLACK
             )
 
-            y += fonts[fontsz].getbbox(datastr)[3] + y_pad
+            temp_height = fonts[fontsz].getbbox(datastr)[3]
+            max_height_this_section = max(max_height_this_section, temp_height)
+
+        # Update y position based on the taller of the two elements
+        if max_height_this_section > 0:
+            y += max_height_this_section + y_pad
 
         # Add upcoming stuff
-        y += y_pad * 4
+        y += y_pad * 2
+
+        # Filter out all-day events before passing to TimeGrid
+        cal_timed = CalendarOutlook()
+        if cal.events:
+            for event in cal.events:
+                if not event.all_day:
+                    cal_timed.add(event)
+
         TimeGrid(
             draw=self._draw,
             weather=weather,
-            calendar=cal,
+            calendar=cal_timed,
             timeframe_hours=7,
             x_base=0,
             y_base=y,
