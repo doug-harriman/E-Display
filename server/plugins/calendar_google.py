@@ -176,10 +176,6 @@ class CalendarGoogle(CalendarBase):
                 start = start.replace(tzinfo=None)
                 end = end.replace(tzinfo=None)
 
-                # All day events have an extra day added
-                if all_day:
-                    end = end - dt.timedelta(days=1)
-
                 # If we got an all day event that's over, skip it.
                 # if end < date:
                 #     continue

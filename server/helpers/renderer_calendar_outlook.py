@@ -82,8 +82,8 @@ class RendererCalendarOutlook(RendererBase):
         y_allday_start = y
         max_height_this_section = 0
 
-        if cal.events:
-            all_day_events = [event for event in cal.events if event.all_day]
+        if cal.upcoming:
+            all_day_events = [event for event in cal.upcoming if event.all_day]
             if all_day_events:
                 all_day_text = ", ".join([event.summary for event in all_day_events])
                 fontsz_allday = "small"
@@ -149,8 +149,8 @@ class RendererCalendarOutlook(RendererBase):
 
         # Filter out all-day events before passing to TimeGrid
         cal_timed = CalendarOutlook()
-        if cal.events:
-            for event in cal.events:
+        if cal.upcoming:
+            for event in cal.upcoming:
                 if not event.all_day:
                     cal_timed.add(event)
 

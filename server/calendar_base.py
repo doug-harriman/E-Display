@@ -20,8 +20,15 @@ class EventBase:
     ):
         self.summary = summary
         self._start = start
-        self._end = end
         self._all_day = all_day
+
+        # For all-day events, APIs typically return end date as next day (exclusive)
+        # Subtract 1 day and set time to 11:59:59 to get the actual event end
+        if all_day and end:
+            end_adjusted = end - dt.timedelta(days=1)
+            self._end = end_adjusted.replace(hour=23, minute=59, second=59, microsecond=0)
+        else:
+            self._end = end
 
     def __repr__(self):
         res = f"{self.summary} "

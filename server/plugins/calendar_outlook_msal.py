@@ -199,6 +199,12 @@ class CalendarOutlook(CalendarBase):
         events = []
         data = resp.json().get("value", [])
         for item in data:
+            # print("")
+            # print(item["subject"])
+            # print(f"  Start: {item['start']['dateTime']} ({item['start']['timeZone']})")
+            # print(f"  End:   {item['end']['dateTime']} ({item['end']['timeZone']})")
+            # print(f"  All Day Event: {item.get('isAllDay', False)}\n")
+
             event = EventBase(
                 summary=item.get("subject", "No Subject"),
                 start=dt.datetime.fromisoformat(item["start"]["dateTime"]),
