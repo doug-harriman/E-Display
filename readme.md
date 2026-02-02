@@ -1,9 +1,8 @@
 # TO-DO
 
-Updated: 2026-01-25
+Updated: 2026-02-01
 
 - [ ] Authentication through web page has not been updated for MSAL.
-- [ ] TRMNL hardware does not have a temperature sensor.  Read from database.
 
 
 # Electronic Image Display Server
