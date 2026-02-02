@@ -2,7 +2,6 @@
 
 Updated: 2026-01-25
 
-- [ ] Convert battery report to voltage level.  Then can use SW to map SOC based on actual performance.
 - [ ] Authentication through web page has not been updated for MSAL.
 - [ ] TRMNL hardware does not have a temperature sensor.  Read from database.
 
