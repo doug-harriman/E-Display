@@ -125,14 +125,14 @@ class RendererCalendarOutlook(RendererBase):
                 )
                 max_height_this_section = text_bbox[3] - text_bbox[1]
 
-        # Kindle state info (temperature - right justified on same line)
+        # Device state info (temperature - right justified on same line)
         if data.temperature is not None:
             fontsz = "medium_small"
 
             # Field - right justified
             datastr = f"{data.temperature}°F"
             text_width = fonts[fontsz].getbbox(datastr)[2]
-            x_temp = Resolution.HORIZ - text_width - 10  # 10 pixels padding from right edge
+            x_temp = Resolution.HORIZ - text_width - 20  # 20 pixels padding from right edge
             self._draw.text(
                 (x_temp, y + y_pad), datastr, font=fonts[fontsz], fill=Color.BLACK
             )
@@ -154,6 +154,7 @@ class RendererCalendarOutlook(RendererBase):
                 if not event.all_day:
                     cal_timed.add(event)
 
+        bottom_margin = 4
         TimeGrid(
             draw=self._draw,
             weather=weather,
@@ -162,7 +163,7 @@ class RendererCalendarOutlook(RendererBase):
             x_base=0,
             y_base=y,
             width=Resolution.HORIZ,
-            height=Resolution.VERT - y - fonts[fontsz].getbbox("X")[3],
+            height=Resolution.VERT - y - fonts[fontsz].getbbox("X")[3] - bottom_margin,
         )
 
         # Footer
@@ -171,7 +172,7 @@ class RendererCalendarOutlook(RendererBase):
         self.render_footer(
             device=device,
             width=Resolution.HORIZ,
-            y=Resolution.VERT - fonts[fontsz].getbbox("X")[3] + y_pad,
+            y=Resolution.VERT - fonts[fontsz].getbbox("X")[3] - bottom_margin + y_pad,
             device_ip=data.ipaddr,
         )
 
