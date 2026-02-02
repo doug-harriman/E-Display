@@ -79,6 +79,12 @@ def LoadPlugins():
 
     setattr(app, "string_filter_manager", fm)
 
+    # Start MQTT listener
+    from MQTT_Client import MQTTClient
+    mqtt_client = MQTTClient()
+    mqtt_client.connect()
+    setattr(app, "mqtt_client", mqtt_client)
+
 
 app.on_startup(handler=LoadPlugins)
 

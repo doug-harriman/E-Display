@@ -46,6 +46,12 @@ class RendererCalendarOutlook(RendererBase):
             data = {"battery_soc": 101, "temperature": 99, "ipaddr": "000.000.0.000"}
             data = DeviceState(**data)
 
+        # If temperature is 99, look to see if we have a better value for the device.
+        if data.temperature == 99:
+            # Check for last temperature entry for device "home-office-tmp"
+            data_device_tmp = db.device_latest("home-office-tmp")
+            if data_device_tmp:
+                data.temperature = data_device_tmp.temperature
 
         # Get weather info
         weather = Weather()
