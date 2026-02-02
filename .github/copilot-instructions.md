@@ -1,30 +1,22 @@
 # AI Agent Instructions for mizuno-chip
 
 ## Project Overview
-Golf club manufacturing data tools for Mizuno. Two independent modules for processing golf club specifications and order data:
-- **loft-lie-angle-plots**: Visualization of club specifications using Plotly
-- **qr-codes**: Binary encoding/QR code generation for manufacturing orders
+This project generates images for an E-Ink display.
 
 ## Project Structure
 ```
-loft-lie-angle-plots/    # Club spec visualization
-  club_grouping.py       # Main script: generates interactive HTML plots
-  iron-model-loft-lie-spec.csv  # Source data
-  clubs.html, clubs-series.html  # Generated outputs
-qr-codes/                # Order data QR encoding
-  job_qr_codes.py        # Full encode/decode workflow with binary format
-  order-example.xlsx     # Sample input format
+arduino/                  # Arduino code for E-Ink display
+docs/                     # Documentation files
+kindle/                   # Kindle-specific code and assets, no longer used.
+server/                   # Backend server code
+trmnl-7.5in-diy-kit/      # Terminal E-Ink documentation and mechanical files, not used.
 ```
+
+The remaining instructions apply only to the `server/` directory.
 
 ## Environment Setup
 - **Python**: 3.13 (see `.python-version`)
 - **Package manager**: uv (see `pyproject.toml`)
-- **Key dependency**: `simplexity-se` is a LOCAL package at `../simplexity_se/` - it's a custom Plotly wrapper (EasyFig)
-- Run scripts directly: `python qr-codes/job_qr_codes.py` or `python loft-lie-angle-plots/club_grouping.py`
-- **IMPORTANT**: Always activate the UV virtual environment before running tests or generating documentation:
-  ```bash
-  source .venv/bin/activate
-  ```
 
 ## Development Standards
 
@@ -114,93 +106,3 @@ def encode_clubs(clubs: List[Dict[str, any]], order_id: int) -> bytes:
 - Use `kebab-case` for all method and function default file names
 - File names should be descriptive of their purpose, e.g., `order-qr-code.png`.
 
-## Data Formats & Encoding
-
-### QR Code Binary Format
-Custom compact binary encoding in [job_qr_codes.py](../qr-codes/job_qr_codes.py):
-- **Angle quantization**: All angles (loft/lie) are transformed before encoding:
-  - Subtract 12°, divide by 0.25, store as 8-bit int (0-255 range)
-  - Allows 0.25° precision with ±0.125° tolerance after round-trip
-- **Structure**: Order# (64-bit) → Yield (32-bit float) → Handedness+ClubCount (8-bit bit-packed) → [Club code (2 bytes) + 4 angles (4×8-bit)]*
-  - **Bit-packing**: Bit 7 = handedness (0='L', 1='R'), Bits 0-6 = club count (0-127)
-- **Club codes**: 2-character ASCII (e.g., "5I", "PW"), "NA" clubs are skipped
-
-### XLSX Input Format (QR codes)
-Expected structure in `order-example.xlsx`:
-- B1: Order number (int)
-- B2: Handedness ("L" or "R")
-- B3: Material yield (float)
-- Row 6: Headers
-- Rows 7-18: 12 clubs max, columns: Club | Loft Initial | Lie Initial | Loft Target | Lie Target
-
-## Key Patterns
-
-### Plotly Visualization via simplexity-se
-**REQUIRED**: All plots MUST use the `EasyFig` wrapper from `simplexity_se` module. Never use raw Plotly figures.
-
-```python
-from simplexity_se import EasyFig
-
-# Use EasyFig to create the figure
-fig = EasyFig()
-
-# Plot the data
-fig.plot(loft_values, y=lie_values, mode="markers+lines", name="Club Series")
-
-# Use EasyFig's simplified property access
-fig.xlabel = "Loft Angle (degrees)"
-fig.ylabel = "Lie Angle (degrees)"
-fig.title = "Plot Title"
-fig.to_html("output.html")
-```
-
-### QR Code Workflow
-Complete encode/decode cycle in `job_qr_codes.py`:
-1. `read_xlsx()` → Dict
-2. `encode_to_binary()` → bytes (custom compact format)
-3. `encode_to_base64()` → str
-4. `generate_qr()` → PNG file
-5. `decode_qr()` → Dict (requires cv2 + pyzbar)
-
-Optional imports pattern: cv2/pyzbar for decoding - degrades gracefully with `QR_DECODE_AVAILABLE` flag
-
-## Common Tasks
-
-**Generate club spec plots:**
-```bash
-cd loft-lie-angle-plots
-python club_grouping.py  # Outputs clubs.html, clubs-series.html
-```
-
-**Generate QR codes from order data:**
-```bash
-cd qr-codes
-python job_qr_codes.py  # Uses order-example.xlsx, outputs order_qr_code.png
-```
-
-**Install dependencies:**
-```bash
-uv sync  # Installs from pyproject.toml, including local simplexity-se
-```
-
-**Run tests:**
-```bash
-source .venv/bin/activate  # Activate virtual environment first
-pytest                     # Run all tests from project root
-```
-
-**Generate documentation:**
-```bash
-source .venv/bin/activate  # Activate virtual environment first
-mkdocs build              # Build documentation
-mkdocs serve              # Serve documentation locally
-```
-
-**Note:** Tests use pytest and must be run from the project root directory with the virtual environment activated.
-
-## Important Constraints
-- Angles must be ≥12° (encoding subtracts 12°)
-- Max 12 clubs per order (XLSX rows 7-18)
-- Club codes exactly 2 characters
-- Handedness must be "L" or "R" (case-insensitive, normalized to uppercase)
-- Quantization creates ±0.13° tolerance - verify decoded angles with `abs(diff) <= 0.13`
