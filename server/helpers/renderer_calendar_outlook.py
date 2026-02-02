@@ -125,14 +125,14 @@ class RendererCalendarOutlook(RendererBase):
                 )
                 max_height_this_section = text_bbox[3] - text_bbox[1]
 
-        # Kindle state info (temperature - right justified on same line)
+        # Device state info (temperature - right justified on same line)
         if data.temperature is not None:
             fontsz = "medium_small"
 
             # Field - right justified
             datastr = f"{data.temperature}°F"
             text_width = fonts[fontsz].getbbox(datastr)[2]
-            x_temp = Resolution.HORIZ - text_width - 10  # 10 pixels padding from right edge
+            x_temp = Resolution.HORIZ - text_width - 20  # 20 pixels padding from right edge
             self._draw.text(
                 (x_temp, y + y_pad), datastr, font=fonts[fontsz], fill=Color.BLACK
             )
