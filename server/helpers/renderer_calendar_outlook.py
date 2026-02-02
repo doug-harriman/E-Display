@@ -154,6 +154,7 @@ class RendererCalendarOutlook(RendererBase):
                 if not event.all_day:
                     cal_timed.add(event)
 
+        bottom_margin = 4
         TimeGrid(
             draw=self._draw,
             weather=weather,
@@ -162,7 +163,7 @@ class RendererCalendarOutlook(RendererBase):
             x_base=0,
             y_base=y,
             width=Resolution.HORIZ,
-            height=Resolution.VERT - y - fonts[fontsz].getbbox("X")[3],
+            height=Resolution.VERT - y - fonts[fontsz].getbbox("X")[3] - bottom_margin,
         )
 
         # Footer
@@ -171,7 +172,7 @@ class RendererCalendarOutlook(RendererBase):
         self.render_footer(
             device=device,
             width=Resolution.HORIZ,
-            y=Resolution.VERT - fonts[fontsz].getbbox("X")[3] + y_pad,
+            y=Resolution.VERT - fonts[fontsz].getbbox("X")[3] - bottom_margin + y_pad,
             device_ip=data.ipaddr,
         )
 
