@@ -184,21 +184,28 @@ class CalendarOutlook(CalendarBase):
         start_utc = start_of_day.astimezone(dt.timezone.utc)
         end_utc = end_of_day.astimezone(dt.timezone.utc)
 
-        # Query MS Graph for events
+        # Query MS Graph for events (handle pagination so recurring instances are not skipped)
         url = (
             f"{self.MS_GRAPH_BASE_URL}/me/calendarView"
             f"?startDateTime={start_utc.strftime('%Y-%m-%dT%H:%M:%SZ')}"
             f"&endDateTime={end_utc.strftime('%Y-%m-%dT%H:%M:%SZ')}"
             "&$orderby=start/dateTime"
         )
-        resp = requests.get(url, headers=headers)
-        if resp.status_code != 200:
-            self._logger.debug(f"Error fetching events: {resp.status_code} {resp.text}")
-            return self
+        events_data: list[dict[str, Any]] = []
+        next_url: str | None = url
+        while next_url:
+            resp = requests.get(next_url, headers=headers)
+            if resp.status_code != 200:
+                self._logger.debug(
+                    f"Error fetching events: {resp.status_code} {resp.text}"
+                )
+                return self
 
-        events = []
-        data = resp.json().get("value", [])
-        for item in data:
+            page = resp.json()
+            events_data.extend(page.get("value", []))
+            next_url = page.get("@odata.nextLink")
+
+        for item in events_data:
             # print("")
             # print(item["subject"])
             # print(f"  Start: {item['start']['dateTime']} ({item['start']['timeZone']})")
@@ -212,7 +219,7 @@ class CalendarOutlook(CalendarBase):
                 all_day=item.get("isAllDay", False) )
             if not item['isCancelled']:
                 self.add(event)
-        self._logger.debug(f"Retrieved {len(events)} events from MS Graph")
+        self._logger.debug(f"Retrieved {len(events_data)} events from MS Graph")
         self.sort()
 
 if __name__ == "__main__":
