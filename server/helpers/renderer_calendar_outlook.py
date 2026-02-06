@@ -371,7 +371,7 @@ def TimeGrid(
         text_padding = 2
         draw.rectangle(
             (text_bbox[0] - text_padding, text_bbox[1] - text_padding,
-             text_bbox[2] + text_padding, text_bbox[3] + text_padding),
+             text_bbox[2] + text_padding, text_bbox[3] - text_padding/2),
             fill=Color.WHITE,
         )
 
