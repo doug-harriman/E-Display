@@ -106,3 +106,6 @@ def encode_clubs(clubs: List[Dict[str, any]], order_id: int) -> bytes:
 - Use `kebab-case` for all method and function default file names
 - File names should be descriptive of their purpose, e.g., `order-qr-code.png`.
 
+### Data Graphing
+
+If a data graph is needed, use `plotly` for graphing.  All graphs should have a white background and the default Plotly controls.

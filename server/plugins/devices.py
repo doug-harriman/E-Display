@@ -19,6 +19,7 @@ import paths
 
 import theme
 from plugin_base import PluginBase, TabItem, MenuItem
+import plotly.graph_objects as go
 
 
 # Logger config
@@ -50,6 +51,69 @@ def battery_voltage_to_soc(voltage: float) -> int:
         return 20
     else:
         return 5
+
+
+def battery_voltage_graph_create(device: str, db: DB) -> go.Figure:
+    """
+    Create a plotly graph of battery voltage vs time for a device.
+
+    Args:
+        device: Device name
+        db: Database instance
+
+    Returns:
+        Plotly Figure object with battery voltage graph
+
+    Example:
+        >>> db = DB()
+        >>> fig = battery_voltage_graph_create("kitchen", db)
+        >>> fig.show()
+    """
+    # Get all data for device
+    df = db.device_all(device)
+    
+    # Filter out invalid voltage readings
+    df_valid = df[df['battery_voltage'] > 0]
+    
+    # Create the figure
+    fig = go.Figure()
+    
+    # Add trace
+    fig.add_trace(go.Scatter(
+        x=df_valid['time'],
+        y=df_valid['battery_voltage'],
+        mode='lines+markers',
+        name='Battery Voltage',
+        line=dict(color='#1f77b4', width=2),
+        marker=dict(size=4)
+    ))
+    
+    # Update layout with white background
+    fig.update_layout(
+        title=f'Battery Voltage - {device.title()}',
+        xaxis_title='Time',
+        yaxis_title='Voltage (V)',
+        plot_bgcolor='white',
+        paper_bgcolor='white',
+        font=dict(color='black'),
+        xaxis=dict(
+            showgrid=True,
+            gridcolor='lightgray',
+            showline=True,
+            linecolor='black'
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor='lightgray',
+            showline=True,
+            linecolor='black',
+            range=[0, 4.5]
+        ),
+        hovermode='closest',
+        margin=dict(l=50, r=20, t=50, b=50)
+    )
+    
+    return fig
 
 ROUTE_DEVICE_DELAY_MGR = "/device_delay_manager"
 ROUTE_DEVICE_MAIN_PAGE = "/"
@@ -107,17 +171,31 @@ async def index():
 
         # DB holds devices that have been seen by this server.
         db = DB()
+        
+        # Display each device with its data and battery voltage graph
         for device in db.devices:
             data = db.device_latest(device)
-
-            ui.markdown(f"### {device.title()}")
-            t = data.time.strftime("%Y-%m-%d %H:%M:%S")
-            ui.markdown(f"* Last Seen: {t}")
-            ui.markdown(f"* Temperature: {data.temperature}")
-            ui.markdown(f"* Battery Voltage: {data.battery_voltage} [V]")
-            ui.markdown(f"* Battery SOC: {data.battery_soc}")
-            ui.markdown(f"* IP Address: {data.ipaddr}")
-            ui.link("Image", f"/image/{data.device}", new_tab=True)
+            
+            # Create a grid layout with two columns (1/3 and 2/3 width)
+            with ui.grid(columns=2).classes('w-full gap-8').style('grid-template-columns: 1fr 2fr;'):
+                # Left column: Device information (1/3 width)
+                with ui.column():
+                    ui.markdown(f"### {device.title()}")
+                    t = data.time.strftime("%Y-%m-%d %H:%M:%S")
+                    ui.markdown(f"* Last Seen: {t}")
+                    ui.markdown(f"* Temperature: {data.temperature}")
+                    ui.markdown(f"* Battery Voltage: {data.battery_voltage} [V]")
+                    ui.markdown(f"* Battery SOC: {data.battery_soc}")
+                    ui.markdown(f"* IP Address: {data.ipaddr}")
+                    ui.link("Image", f"/image/{data.device}", new_tab=True)
+                
+                # Right column: Battery voltage graph (2/3 width)
+                with ui.column():
+                    fig = battery_voltage_graph_create(device, db)
+                    ui.plotly(fig).style('width: 100%; height: 400px;')
+            
+            # Add separator between devices
+            ui.separator()
 
         # Convert dict to tree
         tree = []

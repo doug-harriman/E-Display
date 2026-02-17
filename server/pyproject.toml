@@ -17,6 +17,7 @@ dependencies = [
     "pandas>=2.3.3",
     "pexpect>=4.9.0",
     "pillow==11.3.0",
+    "plotly>=6.5.2",
     "pydantic>=2.12.5",
     "pyvips>=3.1.1",
     "sh>=2.2.2",
